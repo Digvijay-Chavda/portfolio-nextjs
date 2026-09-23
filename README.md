@@ -1,6 +1,8 @@
 # Digvijay Chavda · Portfolio
 
-A survival-horror themed portfolio built with Next.js 15, React 19, TypeScript and Tailwind CSS v4. It exports as a static site, so it deploys on GitHub Pages or Vercel.
+**Live: [digvijay-chavda.vercel.app](https://digvijay-chavda.vercel.app)**
+
+A survival-horror themed portfolio built with Next.js 15, React 19, TypeScript and Tailwind CSS v4. It exports as a static site, so it deploys on Vercel.
 
 ## Run locally
 
@@ -13,16 +15,7 @@ npm run typecheck
 
 ## Deploy
 
-### GitHub Pages
-1. Copy this folder's contents into the root of the `Portfolio-website` repo. Keep `.github/`.
-2. Push to `master`.
-3. In the repo, go to **Settings → Pages → Source: GitHub Actions**.
-4. The site goes live at `https://digvijay-chavda.github.io/Portfolio-website/`.
-
-The workflow sets `NEXT_PUBLIC_BASE_PATH=/<repo-name>`. If you add a custom domain, delete that line.
-
-### Vercel
-Import the repo and keep the defaults. No base path is needed.
+Import the repo into Vercel and keep the defaults — no base path needed. Every push to `master` auto-deploys.
 
 ## Editing content
 All copy (case files, loadout, chapters, nav, loader tips, contact links) lives in **`data/content.ts`**. Images and the resume PDF are in `public/assets/`.
