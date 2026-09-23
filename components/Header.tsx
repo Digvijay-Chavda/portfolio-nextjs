@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { NAV } from '@/data/content';
 import { useEnterSection } from './DoorContext';
+import { FLATLINE_EVENT } from './Hero';
 
 /** 1-4 bars of "signal strength", drives the pulse line's color. */
 function useSignal() {
@@ -18,22 +19,39 @@ function useSignal() {
 // Index by bar count (1-4): weak signal reads red, mid reads amber, strong reads vital green.
 const SIGNAL_COLOR = ['#c8201c', '#c8201c', '#e0a52c', '#7bd86b', '#7bd86b'] as const;
 
+const ECG_NORMAL = '0,15 18,15 24,15 28,5 32,25 36,11 40,15 60,15 66,15 70,5 74,25 78,11 82,15 120,15';
+const ECG_FLAT = '0,15 120,15';
+
+/** Listens for the hero's static-burst click and flatlines the ECG line for its duration. */
+function useFlatline() {
+  const [flat, setFlat] = useState(false);
+  useEffect(() => {
+    const onFlatline = (e: Event) => setFlat((e as CustomEvent<{ active: boolean }>).detail.active);
+    window.addEventListener(FLATLINE_EVENT, onFlatline);
+    return () => window.removeEventListener(FLATLINE_EVENT, onFlatline);
+  }, []);
+  return flat;
+}
+
 function StatusHud() {
   const bars = useSignal();
-  const color = SIGNAL_COLOR[bars];
+  const flat = useFlatline();
+  const color = flat ? '#c8201c' : SIGNAL_COLOR[bars];
+  const label = flat ? 'FLATLINE' : 'Online';
+
   return (
     <div className="flex min-w-[170px] shrink-0 justify-end md:min-w-[230px]">
       <div title="System status: online" className="flex h-[34px] items-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3">
         <svg viewBox="0 0 120 30" preserveAspectRatio="none" className="block h-5 w-16 transition-colors duration-300 md:w-[120px]" style={{ color }}>
           <polyline
-            className="ecg-anim"
-            points="0,15 18,15 24,15 28,5 32,25 36,11 40,15 60,15 66,15 70,5 74,25 78,11 82,15 120,15"
-            fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="80 160"
+            className={flat ? '' : 'ecg-anim'}
+            points={flat ? ECG_FLAT : ECG_NORMAL}
+            fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray={flat ? undefined : '80 160'}
           />
         </svg>
         <div className="flex flex-col items-center gap-[3px] leading-none">
           <span className="font-cond text-[10px] uppercase tracking-[.2em] text-muted">System status</span>
-          <span className="pl-[.1em] text-center font-display text-[15px] font-black uppercase tracking-[.1em] text-vital">Online</span>
+          <span className="pl-[.1em] text-center font-display text-[15px] font-black uppercase tracking-[.1em]" style={{ color: flat ? '#c8201c' : 'var(--color-vital)' }}>{label}</span>
         </div>
       </div>
     </div>
