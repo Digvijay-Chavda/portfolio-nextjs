@@ -1,13 +1,30 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { NAV } from '@/data/content';
 import { useEnterSection } from './DoorContext';
 
+/** 1-4 bars of "signal strength", drives the pulse line's color. */
+function useSignal() {
+  const [bars, setBars] = useState(3);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setBars(1 + Math.floor(Math.random() * 4)), 5000);
+    return () => clearInterval(id);
+  }, []);
+  return bars;
+}
+
+// Index by bar count (1-4): weak signal reads red, mid reads amber, strong reads vital green.
+const SIGNAL_COLOR = ['#c8201c', '#c8201c', '#e0a52c', '#7bd86b', '#7bd86b'] as const;
+
 function StatusHud() {
+  const bars = useSignal();
+  const color = SIGNAL_COLOR[bars];
   return (
     <div className="flex min-w-[170px] shrink-0 justify-end md:min-w-[230px]">
       <div title="System status: online" className="flex h-[34px] items-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3">
-        <svg viewBox="0 0 120 30" preserveAspectRatio="none" className="block h-5 w-16 text-vital md:w-[120px]">
+        <svg viewBox="0 0 120 30" preserveAspectRatio="none" className="block h-5 w-16 transition-colors duration-300 md:w-[120px]" style={{ color }}>
           <polyline
             className="ecg-anim"
             points="0,15 18,15 24,15 28,5 32,25 36,11 40,15 60,15 66,15 70,5 74,25 78,11 82,15 120,15"
@@ -28,7 +45,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-4 border-b border-bone/8 bg-ink/90 px-[clamp(18px,4vw,32px)] py-3.5 backdrop-blur-md">
       <span className="font-display text-[22px] font-black tracking-[.08em]">DC<span className="text-blood">.</span></span>
-      <nav aria-label="Sections" className="hidden flex-wrap gap-[26px] font-cond text-[15px] uppercase tracking-[.22em] md:flex">
+      <nav aria-label="Sections" className="absolute left-1/2 hidden -translate-x-1/2 flex-wrap gap-[26px] font-cond text-[15px] uppercase tracking-[.22em] md:flex">
         {NAV.map(n => (
           <button key={n.id} onClick={() => enter(n.id, n.door)} className="py-1 text-bone transition-colors hover:text-blood">
             {n.label}

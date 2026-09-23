@@ -16,6 +16,9 @@
 }
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+  }
   body {
     margin: 0;
     background: var(--color-ink);
@@ -25,6 +28,18 @@
   }
   a { color: inherit; }
   a:hover { color: var(--color-blood); }
+
+  html {
+    scrollbar-color: var(--color-blood) var(--color-panel);
+  }
+  ::-webkit-scrollbar { width: 12px; }
+  ::-webkit-scrollbar-track { background: var(--color-panel); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-blood);
+    border: 2px solid var(--color-panel);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #e5302a; }
 }
 
 /* Custom cursors: bone arrow everywhere, red crosshair on interactive elements + hero */
