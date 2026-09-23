@@ -90,6 +90,11 @@ a, button, [role="button"], input, textarea {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06), inset 0 0 90px rgba(200, 215, 228, .05);
 }
 
+.hero-scan {
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .09) 0 1px, transparent 1px 3px);
+  mix-blend-mode: overlay;
+}
+
 .case-stripes { background: repeating-linear-gradient(-45deg, #101210 0 10px, #131513 10px 20px); }
 .evidence { transition: filter .5s; }
 @media (min-width: 768px) {
