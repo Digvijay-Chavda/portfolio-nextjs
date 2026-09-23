@@ -27,8 +27,8 @@ export const CASES: CaseFile[] = [
     links: { live: 'https://endpoint-ai.vercel.app', source: 'https://github.com/Digvijay-Chavda/endpoint-ai' },
   },
   {
-    id: 'chat', no: '02', name: 'ZURU Chat', sub: 'ZURU Tech · real-time messaging', stamp: 'SHIPPED',
-    img: '/assets/case-chat.png', pos: 'center 8%', alt: 'ZURU Chat conversation list',
+    id: 'chat', no: '02', name: 'Chat Platform', sub: 'Enterprise software · real-time messaging', stamp: 'SHIPPED',
+    img: '/assets/case-chat.png', pos: 'center 8%', alt: 'Chat Platform conversation list',
     stack: 'React · TypeScript · WebSockets · i18n',
     points: [
       'Media: image gallery, custom video player, GIF and multi-format video, link previews.',
@@ -37,7 +37,7 @@ export const CASES: CaseFile[] = [
     ],
   },
   {
-    id: 'cct', no: '03', name: 'Compliance Tool', sub: 'ZURU Tech · GIS building-code platform', stamp: 'SHIPPED',
+    id: 'cct', no: '03', name: 'Compliance Tool', sub: 'Enterprise software · GIS building-code platform', stamp: 'SHIPPED',
     img: '/assets/case-cct.png', pos: 'left top', alt: 'Code Compliance Tool task board',
     stack: 'React · TypeScript · shadcn/ui · Zustand',
     points: [
@@ -47,8 +47,8 @@ export const CASES: CaseFile[] = [
     ],
   },
   {
-    id: 'acc', no: '04', name: 'ZURU Accounts', sub: 'ZURU Tech · sign-in & accounts', stamp: 'SHIPPED',
-    img: '/assets/case-accounts.png', pos: 'left top', alt: 'ZURU Accounts settings',
+    id: 'acc', no: '04', name: 'Accounts Platform', sub: 'Enterprise software · sign-in & accounts', stamp: 'SHIPPED',
+    img: '/assets/case-accounts.png', pos: 'left top', alt: 'Accounts Platform settings',
     stack: 'React · TypeScript · Amplitude',
     points: [
       'Owned the auth frontend: invitations, magic-link and social login, silent token refresh.',
