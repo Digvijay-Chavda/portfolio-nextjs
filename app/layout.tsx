@@ -6,9 +6,28 @@ const display = Big_Shoulders({ subsets: ['latin'], weight: ['600', '800', '900'
 const cond = Barlow_Condensed({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-barlow-cond' });
 const sans = Barlow({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-barlow' });
 
+const siteUrl = 'https://digvijay-chavda.vercel.app';
+const title = 'Digvijay Chavda · Software Engineer';
+const description = 'Software engineer building production React, TypeScript and Next.js apps.';
+
 export const metadata: Metadata = {
-  title: 'Digvijay Chavda · Software Engineer',
-  description: 'Software engineer building production React, TypeScript and Next.js apps.',
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: 'Digvijay Chavda · Portfolio',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: title }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/og-image.jpg'],
+  },
 };
 
 export const viewport: Viewport = { themeColor: '#0a0b0a' };
