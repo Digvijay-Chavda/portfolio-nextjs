@@ -41,7 +41,7 @@ export function Chapters() {
           <li key={ch.title} className="relative flex flex-col gap-2.5 pl-9 md:gap-3 md:pt-[34px] md:pl-0">
             <span aria-hidden className="absolute top-0.5 left-0 h-[13px] w-[13px] rotate-45 border-2 border-blood bg-ink md:top-[3px]" />
             <span className="font-cond text-sm tracking-[.24em] text-muted">{ch.when}</span>
-            <span className="font-display text-[26px] font-extrabold uppercase leading-none">{ch.title}</span>
+            <span className="font-display text-2xl font-extrabold md:text-[26px] uppercase leading-none">{ch.title}</span>
             <span className="text-base leading-normal text-body">{ch.body}</span>
           </li>
         ))}
@@ -59,7 +59,7 @@ export function Contact() {
       <h2 className="m-0 font-display text-[clamp(60px,10.5vw,170px)] font-black leading-[.82] tracking-[.02em] text-blood">
         <NeonText text="INTERESTED?" />
       </h2>
-      <div className="flex flex-wrap justify-center gap-3.5 font-cond text-[17px] uppercase tracking-[.24em]">
+      <div className="flex flex-wrap justify-center gap-3.5 font-cond text-base uppercase tracking-[.24em] md:text-[17px]">
         <a href={`mailto:${CONTACT.email}`} className="bg-bone px-[30px] py-4 text-ink no-underline transition-colors hover:bg-white hover:text-ink">
           Yes · Send email
         </a>
@@ -67,7 +67,7 @@ export function Contact() {
           Download resume
         </a>
       </div>
-      <footer className="absolute inset-x-0 bottom-[76px] flex flex-wrap justify-center gap-7 px-[18px] font-cond text-[15px] tracking-[.14em] text-muted md:bottom-6">
+      <footer className="absolute inset-x-0 bottom-[76px] flex flex-wrap justify-center gap-x-6 gap-y-2 px-[18px] font-cond text-sm tracking-[.14em] text-muted md:bottom-6 md:gap-7 md:text-[15px]">
         <a href={CONTACT.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
         <a href={CONTACT.github} target="_blank" rel="noreferrer">GitHub</a>
         <span className="select-text">{CONTACT.email}</span>

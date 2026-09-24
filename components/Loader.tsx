@@ -39,7 +39,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
       className="pointer-events-none fixed inset-0 z-[62] flex flex-col justify-between p-[clamp(22px,4vw,40px)]"
       style={{ background: 'radial-gradient(ellipse at 50% 55%, rgba(122,20,17,.22), transparent 60%)' }}
     >
-      <div className="flex justify-end gap-5 font-cond text-[13px] tracking-[.3em] text-muted">
+      <div className="flex justify-end gap-5 font-cond text-xs tracking-[.3em] md:text-[13px] text-muted">
         <span className="pulse-fast text-blood">● REC</span>
       </div>
 
@@ -55,7 +55,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
         <span ref={pctRef} className="font-display text-[clamp(84px,14vw,180px)] font-black leading-[.8] tracking-[.02em] text-bone tabular-nums">
           000
         </span>
-        <span className="min-h-[18px] font-cond text-[15px] uppercase tracking-[.42em] text-blood">{tip}</span>
+        <span className="min-h-[18px] font-cond text-sm uppercase tracking-[.42em] md:text-[15px] text-blood">{tip}</span>
       </div>
 
       <div className="flex flex-col gap-2.5">

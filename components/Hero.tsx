@@ -112,7 +112,7 @@ export function Hero({ ready }: { ready: boolean }) {
       <div className="relative z-[2] mx-auto flex w-full max-w-[1320px] flex-col gap-[18px] px-[clamp(18px,4vw,32px)] pb-[13vh]">
         <div className="-mb-1 flex items-center gap-3.5">
           <span className="h-0.5 w-[clamp(28px,4vw,48px)] bg-blood" />
-          <span className="font-cond text-[clamp(14px,1.4vw,17px)] font-semibold tracking-[.42em] text-bone [text-shadow:0_1px_8px_rgba(0,0,0,.9)]">
+          <span className="font-cond text-sm md:text-[clamp(14px,1.4vw,17px)] font-semibold tracking-[.42em] text-bone [text-shadow:0_1px_8px_rgba(0,0,0,.9)]">
             SUBJECT <span className="text-blood">FILE</span>
           </span>
         </div>
@@ -124,7 +124,7 @@ export function Hero({ ready }: { ready: boolean }) {
         <div className="flex flex-wrap items-end justify-between gap-10">
           <div className="m-0 flex max-w-[540px] flex-col gap-1.5">
             <span className="font-cond text-lg font-semibold uppercase tracking-[.1em] text-bone">Software Developer</span>
-            <p className="m-0 text-xl leading-normal text-body text-pretty">
+            <p className="m-0 text-base leading-normal md:text-xl text-body text-pretty">
               Specialized in interfaces built for production, not prototypes — React, TypeScript, Next.js — with growing focus on AI: RAG, tool-calling agents, LLM-powered tools.
             </p>
           </div>
