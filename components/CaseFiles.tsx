@@ -18,7 +18,7 @@ export function CaseFiles() {
     <section id="cases" className="mx-auto max-w-[1320px] px-[clamp(18px,4vw,32px)] pt-[clamp(90px,12vw,130px)] pb-[clamp(60px,8vw,90px)]">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
         <h2 className="m-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]">Work files</h2>
-        <span className="font-cond text-[15px] uppercase tracking-[.2em] text-muted">
+        <span className="font-cond text-sm uppercase tracking-[.2em] text-muted md:text-[15px]">
           {String(CASES.length).padStart(2, '0')} files found
         </span>
       </div>
@@ -60,7 +60,7 @@ export function CaseFiles() {
           <span className="absolute bottom-4 left-[18px] bg-black/60 px-[9px] py-[5px] font-cond text-xs tracking-[.24em] text-bone">
             EVIDENCE<span className="hidden md:inline"> · HOVER TO DEVELOP</span>
           </span>
-          <span className="absolute top-[26px] right-[26px] -rotate-[8deg] border-[3px] border-blood bg-ink/70 px-3.5 py-1.5 font-display text-[28px] font-black tracking-[.12em] text-blood">
+          <span className="absolute top-[26px] right-[26px] -rotate-[8deg] border-[3px] border-blood bg-ink/70 px-3.5 py-1.5 font-display text-2xl font-black md:text-[28px] tracking-[.12em] text-blood">
             {cur.stamp}
           </span>
         </div>
@@ -70,15 +70,15 @@ export function CaseFiles() {
           <h3 className="m-0 font-display text-[clamp(40px,6vw,56px)] font-black uppercase leading-[.9]">{cur.name}</h3>
           <ul className="m-0 flex list-none flex-col gap-3 p-0">
             {cur.points.map(p => (
-              <li key={p} className="grid grid-cols-[22px_1fr] gap-2.5 text-[17px] leading-normal text-body">
+              <li key={p} className="grid grid-cols-[22px_1fr] gap-2.5 text-base leading-normal md:text-[17px] text-body">
                 <span aria-hidden className="font-cond font-semibold text-blood">▸</span>
                 <span>{p}</span>
               </li>
             ))}
           </ul>
-          <span className="font-cond text-[15px] tracking-[.08em] text-muted">{cur.stack}</span>
+          <span className="font-cond text-sm tracking-[.08em] text-muted md:text-[15px]">{cur.stack}</span>
           {cur.links && (
-            <div className="flex flex-wrap gap-3 font-cond text-[15px] uppercase tracking-[.18em]">
+            <div className="flex flex-wrap gap-3 font-cond text-sm uppercase tracking-[.18em] md:text-[15px]">
               <a href={cur.links.live} target="_blank" rel="noreferrer" className="bg-blood px-5 py-3 text-white no-underline hover:text-white">Open live</a>
               <a href={cur.links.source} target="_blank" rel="noreferrer" className="border border-bone/40 px-5 py-3 no-underline">Source</a>
             </div>
