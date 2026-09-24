@@ -67,14 +67,11 @@ export function Contact() {
           Download resume
         </a>
       </div>
-      <div className="flex flex-wrap justify-center gap-7 font-cond text-[15px] tracking-[.14em] text-muted">
+      <footer className="absolute inset-x-0 bottom-[76px] flex flex-wrap justify-center gap-7 px-[18px] font-cond text-[15px] tracking-[.14em] text-muted md:bottom-6">
         <a href={CONTACT.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
         <a href={CONTACT.github} target="_blank" rel="noreferrer">GitHub</a>
         <span className="select-text">{CONTACT.email}</span>
-      </div>
-      <span className="absolute inset-x-0 bottom-[76px] px-[18px] font-cond text-xs tracking-[.14em] text-dim md:bottom-6">
-        ORIGINAL FAN-INSPIRED THEME · NOT AFFILIATED WITH ANY GAME PUBLISHER
-      </span>
+      </footer>
     </section>
   );
 }
