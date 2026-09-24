@@ -5,18 +5,19 @@ export type CaseFile = {
   no: string;
   name: string;
   sub: string;
-  stamp: 'LIVE' | 'SHIPPED';
   img: string;
   pos: string;
   alt: string;
   stack: string;
   points: string[];
   links?: { live: string; source: string };
+  /** Internal, unreleased product: render the redacted placeholder instead of the real screenshot. */
+  classified?: boolean;
 };
 
 export const CASES: CaseFile[] = [
   {
-    id: 'ep', no: '01', name: 'Endpoint', sub: 'Solo project · AI API mocking', stamp: 'LIVE',
+    id: 'ep', no: '01', name: 'Endpoint', sub: 'Solo project · AI API mocking',
     img: '/assets/case-endpoint.png', pos: 'center 30%', alt: 'Endpoint dashboard',
     stack: 'Next.js 16 · TypeScript · PostgreSQL · Prisma · Gemini AI · SSE',
     points: [
@@ -27,8 +28,8 @@ export const CASES: CaseFile[] = [
     links: { live: 'https://endpoint-ai.vercel.app', source: 'https://github.com/Digvijay-Chavda/endpoint-ai' },
   },
   {
-    id: 'chat', no: '02', name: 'Chat Platform', sub: 'Enterprise software · real-time messaging', stamp: 'SHIPPED',
-    img: '/assets/case-chat.png', pos: 'center 8%', alt: 'Chat Platform conversation list',
+    id: 'chat', no: '02', name: 'Chat Platform', sub: 'Enterprise software · real-time messaging',
+    img: '/assets/case-chat.png', pos: 'center 8%', alt: 'Chat Platform conversation list', classified: true,
     stack: 'React · TypeScript · WebSockets · i18n',
     points: [
       'Media: image gallery, custom video player, GIF and multi-format video, link previews.',
@@ -37,8 +38,8 @@ export const CASES: CaseFile[] = [
     ],
   },
   {
-    id: 'cct', no: '03', name: 'Compliance Tool', sub: 'Enterprise software · GIS building-code platform', stamp: 'SHIPPED',
-    img: '/assets/case-cct.png', pos: 'left top', alt: 'Code Compliance Tool task board',
+    id: 'cct', no: '03', name: 'Compliance Tool', sub: 'Enterprise software · GIS building-code platform',
+    img: '/assets/case-cct.png', pos: 'left top', alt: 'Code Compliance Tool task board', classified: true,
     stack: 'React · TypeScript · shadcn/ui · Zustand',
     points: [
       'Permission-aware (RBAC) component system that shows or hides UI by role.',
@@ -47,8 +48,8 @@ export const CASES: CaseFile[] = [
     ],
   },
   {
-    id: 'acc', no: '04', name: 'Accounts Platform', sub: 'Enterprise software · sign-in & accounts', stamp: 'SHIPPED',
-    img: '/assets/case-accounts.png', pos: 'left top', alt: 'Accounts Platform settings',
+    id: 'acc', no: '04', name: 'Accounts Platform', sub: 'Enterprise software · sign-in & accounts',
+    img: '/assets/case-accounts.png', pos: 'left top', alt: 'Accounts Platform settings', classified: true,
     stack: 'React · TypeScript · Amplitude',
     points: [
       'Owned the auth frontend: invitations, magic-link and social login, silent token refresh.',

@@ -3,6 +3,32 @@
 import { useState } from 'react';
 import { CASES, type CaseFile } from '@/data/content';
 import { useDoors } from './DoorContext';
+import { ScrambleText } from './ScrambleText';
+
+/** Stand-in for an unreleased internal product: a drifting classified-document
+ * texture, instead of a real screenshot. */
+function RedactedPlaceholder({ alt }: { alt: string }) {
+  return (
+    <div role="img" aria-label={alt} className="absolute inset-0 overflow-hidden bg-[#0c0d0c]">
+      <div
+        aria-hidden
+        className="stamp-drift absolute inset-[-30%] flex flex-wrap content-center gap-x-16 gap-y-10 opacity-[.09]"
+        style={{ transform: 'rotate(-18deg)' }}
+      >
+        {Array.from({ length: 60 }, (_, i) => (
+          <span key={i} className="font-display whitespace-nowrap text-3xl font-black uppercase tracking-[.2em] text-bone">
+            Under NDA
+          </span>
+        ))}
+      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'radial-gradient(circle at 50% 42%, rgba(255,255,255,.05) 0%, transparent 32%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.85) 100%)' }}
+      />
+    </div>
+  );
+}
 
 export function CaseFiles() {
   const [curId, setCurId] = useState(CASES[0].id);
@@ -17,7 +43,9 @@ export function CaseFiles() {
   return (
     <section id="cases" className="mx-auto max-w-[1320px] px-[clamp(18px,4vw,32px)] pt-[clamp(90px,12vw,130px)] pb-[clamp(60px,8vw,90px)]">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
-        <h2 className="m-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]">Work files</h2>
+        <h2 className="m-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]">
+          <ScrambleText text="Work files" />
+        </h2>
         <span className="font-cond text-sm uppercase tracking-[.2em] text-muted md:text-[15px]">
           {String(CASES.length).padStart(2, '0')} files found
         </span>
@@ -50,18 +78,19 @@ export function CaseFiles() {
 
       <div role="tabpanel" className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] border border-t-2 border-bone/15 border-t-blood bg-panel">
         <div className="case-stripes relative flex min-h-[clamp(240px,40vw,460px)] items-center justify-center overflow-hidden border-b border-bone/10">
-          <div
-            role="img"
-            aria-label={cur.alt}
-            className="evidence absolute inset-0 bg-cover"
-            style={{ backgroundImage: `url("${cur.img}")`, backgroundPosition: cur.pos }}
-          />
+          {cur.classified ? (
+            <RedactedPlaceholder alt={cur.alt} />
+          ) : (
+            <div
+              role="img"
+              aria-label={cur.alt}
+              className="evidence absolute inset-0 bg-cover"
+              style={{ backgroundImage: `url("${cur.img}")`, backgroundPosition: cur.pos }}
+            />
+          )}
           <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,.85)]" />
-          <span className="absolute bottom-4 left-[18px] bg-black/60 px-[9px] py-[5px] font-cond text-xs tracking-[.24em] text-bone">
-            EVIDENCE<span className="hidden md:inline"> · HOVER TO DEVELOP</span>
-          </span>
-          <span className="absolute top-[26px] right-[26px] -rotate-[8deg] border-[3px] border-blood bg-ink/70 px-3.5 py-1.5 font-display text-2xl font-black md:text-[28px] tracking-[.12em] text-blood">
-            {cur.stamp}
+          <span className={`absolute bottom-4 left-[18px] px-[9px] py-[5px] font-cond text-xs tracking-[.24em] ${cur.classified ? 'bg-black neon-flicker' : 'bg-black/60 text-bone'}`}>
+            {cur.classified ? 'CLASSIFIED' : 'EVIDENCE'}
           </span>
         </div>
 
