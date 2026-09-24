@@ -7,8 +7,8 @@ const cond = Barlow_Condensed({ subsets: ['latin'], weight: ['400', '500', '600'
 const sans = Barlow({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-barlow' });
 
 const siteUrl = 'https://digvijay-chavda.vercel.app';
-const title = 'Digvijay Chavda · Software Engineer';
-const description = 'Software engineer building production React, TypeScript and Next.js apps.';
+const title = 'Digvijay Chavda · Software Developer';
+const description = 'Software developer building production React, TypeScript and Next.js apps.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -68,15 +68,13 @@ export const LOADOUT = [
 export const CHAPTERS = [
   { when: '2018 – 2021', title: 'Diploma, ICT', body: 'Marwadi University, Rajkot. CGPA 9.12.' },
   { when: '2021 – 2024', title: 'B.Tech, ICT', body: 'Marwadi University, Rajkot. CGPA 8.84.' },
-  { when: 'MAY 2023', title: 'ZURU Tech', body: 'Software Engineer (React.js), Online Services. Seven products since.' },
-  { when: 'RECENT', title: 'Endpoint', body: 'Built and shipped solo: AI-powered API mocking on Vercel.' },
-  { when: 'NOW', title: 'AI & modern stacks', body: 'Learning RAG and tool-calling agents, streaming AI UIs and AI-augmented dev workflows, alongside modern frontend frameworks.' },
+  { when: 'MAY 2023 – PRESENT', title: 'ZURU Tech', body: 'Software Engineer (React.js), Online Services. Seven products since.' },
 ];
 
 // [nav label, section id, door label, key]
 export const NAV = [
-  { label: 'Files', id: 'cases', door: 'Case files', key: '01' },
-  { label: 'Loadout', id: 'loadout', door: 'Loadout', key: '02' },
+  { label: 'Files', id: 'cases', door: 'Work files', key: '01' },
+  { label: 'Skills', id: 'loadout', door: 'Skills', key: '02' },
   { label: 'Chapters', id: 'chapters', door: 'Chapters', key: '03' },
   { label: 'Contact', id: 'contact', door: 'Continue', key: '04' },
 ] as const;

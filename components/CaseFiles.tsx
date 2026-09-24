@@ -18,7 +18,7 @@ export function CaseFiles() {
   return (
     <section id="cases" className="mx-auto max-w-[1320px] px-[clamp(18px,4vw,32px)] pt-[clamp(90px,12vw,130px)] pb-[clamp(60px,8vw,90px)]">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
-        <h2 className="m-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]">Case files</h2>
+        <h2 className="m-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]">Work files</h2>
         <span className="font-cond text-[15px] uppercase tracking-[.2em] text-muted">
           {String(CASES.length).padStart(2, '0')} files found
         </span>

@@ -6,7 +6,7 @@ import { asset } from '@/lib/asset';
 import { staticBurst } from '@/lib/staticBurst';
 import { ScrambleName } from './ScrambleName';
 
-/** Dispatched on click; Header's HUD listens and flatlines the ECG line for the burst's duration. */
+/** Dispatched with each signal-loss burst; Header's HUD listens and flatlines the ECG line for its duration. */
 export const FLATLINE_EVENT = 'hero:flatline';
 
 export function Hero({ ready }: { ready: boolean }) {
@@ -35,42 +35,38 @@ export function Hero({ ready }: { ready: boolean }) {
     el.style.setProperty('--y', `${clientY - r.top}px`);
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0 || !e.isPrimary || busy.current) return;
-    if ((e.target as HTMLElement).closest('a,button,input')) return;
-
-    // --- Shatter glass (commented out, kept for easy revert) ---
-    // const box = shardsRef.current;
-    // if (!box) return;
-    // const r = box.getBoundingClientRect();
-    // busy.current = true;
-    // cancelShatter.current = shatterGlass({
-    //   box, hero: heroRef.current, glass: glassRef.current,
-    //   x: e.clientX - r.left, y: e.clientY - r.top,
-    //   onDone: () => { busy.current = false; },
-    // });
-
-    // --- Static / signal-loss burst ---
+  // Fires the signal-loss burst on its own, at an unpredictable interval, independent of user interaction.
+  useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ghostA = ghostARef.current;
-    const ghostB = ghostBRef.current;
-    const scan = scanRef.current;
-    const flash = flashRef.current;
-    if (!ghostA || !ghostB || !scan || !flash) return;
-    busy.current = true;
-    window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: true } }));
-    heroRef.current?.animate(
-      [{ transform: 'none' }, { transform: 'translate(-10px,6px)' }, { transform: 'translate(8px,-5px)' }, { transform: 'translate(-4px,2px)' }, { transform: 'none' }],
-      { duration: 280, easing: 'ease-out' },
-    );
-    cancelBurst.current = staticBurst({
-      ghostA, ghostB, scan, flash,
-      onDone: () => {
-        busy.current = false;
-        window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: false } }));
-      },
-    });
-  };
+
+    // Wide, non-uniform range so the wait itself feels random rather than metronomic.
+    const nextDelay = () => 4000 + Math.random() * Math.random() * 10000;
+
+    let timer: ReturnType<typeof setTimeout>;
+    const schedule = (ms: number) => { timer = setTimeout(trigger, ms); };
+
+    const trigger = () => {
+      const ghostA = ghostARef.current;
+      const ghostB = ghostBRef.current;
+      const scan = scanRef.current;
+      const flash = flashRef.current;
+      if (!busy.current && ghostA && ghostB && scan && flash) {
+        busy.current = true;
+        window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: true } }));
+        cancelBurst.current = staticBurst({
+          ghostA, ghostB, scan, flash,
+          onDone: () => {
+            busy.current = false;
+            window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: false } }));
+          },
+        });
+      }
+      schedule(nextDelay());
+    };
+
+    schedule(nextDelay());
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section
@@ -78,8 +74,7 @@ export function Hero({ ready }: { ready: boolean }) {
       ref={heroRef}
       onMouseMove={e => moveLight(e.clientX, e.clientY)}
       onTouchMove={e => e.touches[0] && moveLight(e.touches[0].clientX, e.touches[0].clientY)}
-      onPointerDown={onPointerDown}
-      className="cursor-crosshair-red relative flex min-h-screen items-end overflow-hidden bg-[#0d0f0d]"
+      className="relative flex min-h-screen items-end overflow-hidden bg-[#0d0f0d]"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -123,12 +118,15 @@ export function Hero({ ready }: { ready: boolean }) {
         </h1>
 
         <div className="flex flex-wrap items-end justify-between gap-10">
-          <p className="m-0 max-w-[540px] text-xl leading-normal text-body text-pretty">
-            Software engineer. React, TypeScript and Next.js in production across seven products, from real-time chat to a GIS compliance platform.
-          </p>
+          <div className="m-0 flex max-w-[540px] flex-col gap-1.5">
+            <span className="font-cond text-lg font-semibold uppercase tracking-[.1em] text-bone">Software Developer</span>
+            <p className="m-0 text-xl leading-normal text-body text-pretty">
+              Specialized in interfaces built for production, not prototypes — React, TypeScript, Next.js — with growing focus on AI: RAG, tool-calling agents, LLM-powered tools.
+            </p>
+          </div>
           <span className="pulse-soft font-cond text-sm tracking-[.3em] text-muted">
-            <span className="md:hidden">DRAG TO EXPLORE · TAP TO LOSE SIGNAL</span>
-            <span className="hidden md:inline">MOVE YOUR LIGHT · CLICK TO LOSE SIGNAL</span>
+            <span className="md:hidden">DRAG TO EXPLORE</span>
+            <span className="hidden md:inline">MOVE YOUR LIGHT TO EXPLORE</span>
           </span>
         </div>
       </div>
