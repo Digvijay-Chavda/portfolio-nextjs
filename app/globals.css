@@ -25,6 +25,8 @@
     color: var(--color-bone);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    user-select: none;
   }
   a { color: inherit; }
   a:hover { color: var(--color-blood); }
@@ -42,16 +44,14 @@
   ::-webkit-scrollbar-thumb:hover { background: #e5302a; }
 }
 
-/* Custom cursors: bone arrow everywhere, red crosshair on interactive elements + hero */
+/* Custom cursors: bone arrow everywhere, red crosshair on interactive elements */
 html, body {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cpath%20d%3D%27M3%202%20L3%2026%20L9%2020.5%20L13.2%2029.5%20L17.4%2027.6%20L13.3%2018.8%20L21%2018.8%20Z%27%20fill%3D%27%23dcd6c8%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%271.6%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cpath%20d%3D%27M5%207%20L5%2021%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Ccircle%20cx%3D%273.2%27%20cy%3D%272.4%27%20r%3D%271.6%27%20fill%3D%27%23c8201c%27%2F%3E%3C%2Fsvg%3E") 3 2, auto;
 }
 a, button, [role="button"], input, textarea {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cg%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%27%23ff3a2e%27%20stroke-width%3D%271.6%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%272%27%20fill%3D%27%23ff2a20%27%2F%3E%3C%2Fsvg%3E") 16 16, pointer !important;
 }
-.cursor-crosshair-red {
-  cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cg%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%27%23ff3a2e%27%20stroke-width%3D%271.6%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%272%27%20fill%3D%27%23ff2a20%27%2F%3E%3C%2Fsvg%3E") 16 16, crosshair;
-}
+
 
 @keyframes ecg { from { stroke-dashoffset: 0 } to { stroke-dashoffset: -240 } }
 @keyframes grain {
@@ -80,7 +80,7 @@ a, button, [role="button"], input, textarea {
 .door-r { right: 0; border-left: 2px solid #050505; }
 
 .hero-light {
-  background: radial-gradient(circle 240px at var(--x, 70%) var(--y, 40%),
+  background: radial-gradient(circle 190px at var(--x, 70%) var(--y, 40%),
     rgba(255, 240, 210, .04) 0, rgba(8, 9, 8, .25) 40%, rgba(6, 7, 6, .8) 75%);
 }
 .hero-glass {

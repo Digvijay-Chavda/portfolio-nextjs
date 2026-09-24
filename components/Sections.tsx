@@ -7,7 +7,7 @@ const h2 = 'm-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase l
 export function Loadout() {
   return (
     <section id="loadout" className={sectionPad}>
-      <h2 className={`${h2} mb-10`}>Loadout</h2>
+      <h2 className={`${h2} mb-10`}>Skills</h2>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-0.5 bg-bone/10">
         {LOADOUT.map(g => (
           <div key={g.slot} className="flex flex-col gap-4 bg-ink p-[30px]">
@@ -69,7 +69,7 @@ export function Contact() {
       <div className="flex flex-wrap justify-center gap-7 font-cond text-[15px] tracking-[.14em] text-muted">
         <a href={CONTACT.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
         <a href={CONTACT.github} target="_blank" rel="noreferrer">GitHub</a>
-        <span>{CONTACT.email}</span>
+        <span className="select-text">{CONTACT.email}</span>
       </div>
       <span className="absolute inset-x-0 bottom-[76px] px-[18px] font-cond text-xs tracking-[.14em] text-dim md:bottom-6">
         ORIGINAL FAN-INSPIRED THEME · NOT AFFILIATED WITH ANY GAME PUBLISHER
