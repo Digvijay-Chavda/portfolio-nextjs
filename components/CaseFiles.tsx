@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { CASES, type CaseFile } from '@/data/content';
-import { asset } from '@/lib/asset';
 import { useDoors } from './DoorContext';
 
 export function CaseFiles() {
@@ -55,7 +54,7 @@ export function CaseFiles() {
             role="img"
             aria-label={cur.alt}
             className="evidence absolute inset-0 bg-cover"
-            style={{ backgroundImage: `url("${asset(cur.img)}")`, backgroundPosition: cur.pos }}
+            style={{ backgroundImage: `url("${cur.img}")`, backgroundPosition: cur.pos }}
           />
           <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,.85)]" />
           <span className="absolute bottom-4 left-[18px] bg-black/60 px-[9px] py-[5px] font-cond text-xs tracking-[.24em] text-bone">

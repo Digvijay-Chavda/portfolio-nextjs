@@ -5,37 +5,35 @@ import { NAV } from '@/data/content';
 import { useEnterSection } from './DoorContext';
 import { FLATLINE_EVENT } from './Hero';
 
-/** 1-4 bars of "signal strength", drives the pulse line's color. */
-function useSignal() {
-  const [bars, setBars] = useState(3);
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = setInterval(() => setBars(1 + Math.floor(Math.random() * 4)), 5000);
-    return () => clearInterval(id);
-  }, []);
-  return bars;
-}
-
 // Index by bar count (1-4): weak signal reads red, mid reads amber, strong reads vital green.
 const SIGNAL_COLOR = ['#c8201c', '#c8201c', '#e0a52c', '#7bd86b', '#7bd86b'] as const;
 
 const ECG_NORMAL = '0,15 18,15 24,15 28,5 32,25 36,11 40,15 60,15 66,15 70,5 74,25 78,11 82,15 120,15';
 const ECG_FLAT = '0,15 120,15';
 
-/** Listens for the hero's static-burst click and flatlines the ECG line for its duration. */
-function useFlatline() {
+/** Signal-strength bars and the hero's flatline event, coordinated in one hook so the
+ * bar-randomizing interval pauses while flatlined instead of ticking uselessly underneath it. */
+function useHudState() {
+  const [bars, setBars] = useState(3);
   const [flat, setFlat] = useState(false);
+
   useEffect(() => {
     const onFlatline = (e: Event) => setFlat((e as CustomEvent<{ active: boolean }>).detail.active);
     window.addEventListener(FLATLINE_EVENT, onFlatline);
     return () => window.removeEventListener(FLATLINE_EVENT, onFlatline);
   }, []);
-  return flat;
+
+  useEffect(() => {
+    if (flat || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setBars(1 + Math.floor(Math.random() * 4)), 5000);
+    return () => clearInterval(id);
+  }, [flat]);
+
+  return { bars, flat };
 }
 
 function StatusHud() {
-  const bars = useSignal();
-  const flat = useFlatline();
+  const { bars, flat } = useHudState();
   const color = flat ? '#c8201c' : SIGNAL_COLOR[bars];
   const label = flat ? 'FLATLINE' : 'Online';
 

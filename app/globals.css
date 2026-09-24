@@ -49,7 +49,7 @@ html, body {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cpath%20d%3D%27M3%202%20L3%2026%20L9%2020.5%20L13.2%2029.5%20L17.4%2027.6%20L13.3%2018.8%20L21%2018.8%20Z%27%20fill%3D%27%23dcd6c8%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%271.6%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cpath%20d%3D%27M5%207%20L5%2021%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Ccircle%20cx%3D%273.2%27%20cy%3D%272.4%27%20r%3D%271.6%27%20fill%3D%27%23c8201c%27%2F%3E%3C%2Fsvg%3E") 3 2, auto;
 }
 a, button, [role="button"], input, textarea {
-  cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2710%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cg%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.5%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%27%23ff3a2e%27%20stroke-width%3D%271.6%27%3E%3Cpath%20d%3D%27M16%201v8M16%2023v8M1%2016h8M23%2016h8%27%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%272%27%20fill%3D%27%23ff2a20%27%2F%3E%3C%2Fsvg%3E") 16 16, pointer !important;
+  cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27rgba%28220%2C214%2C200%2C.12%29%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.2%27%2F%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%274.2%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E") 13 13, pointer !important;
 }
 
 
@@ -64,6 +64,30 @@ a, button, [role="button"], input, textarea {
 .pulse-fast { animation: pulse-soft 1s infinite; }
 .ecg-anim { animation: ecg 1.6s linear infinite; filter: drop-shadow(0 0 4px currentColor); }
 
+/* Neon motel-sign flicker: a slow smooth wine-red breathing glow, punctuated by one
+   quick short-circuit-style stutter burst per cycle rather than a mechanical step pattern.
+   Per-stop timing-function keeps the breathing smooth but makes the burst hit instantly. */
+@keyframes neon-flicker {
+  0%      { color: #c8201c; text-shadow: 0 0 4px #c8201c, 0 0 10px #8f1512, 0 0 22px #4a0a08; animation-timing-function: ease-in-out; }
+  44%     { color: #a81c18; text-shadow: 0 0 3px #a81c18, 0 0 8px #8f1512, 0 0 16px #4a0a08; animation-timing-function: ease-in-out; }
+  /* Short-circuit burst, ~86-92% of the cycle: rapid hard on/off, no easing. */
+  86%     { color: #c8201c; text-shadow: 0 0 4px #c8201c, 0 0 10px #8f1512, 0 0 22px #4a0a08; animation-timing-function: step-end; }
+  86.6%   { color: #2a0605; text-shadow: none; animation-timing-function: step-end; }
+  87.1%   { color: #c8201c; text-shadow: 0 0 6px #c8201c, 0 0 16px #8f1512, 0 0 30px #4a0a08; animation-timing-function: step-end; }
+  87.5%   { color: #2a0605; text-shadow: none; animation-timing-function: step-end; }
+  88.2%   { color: #c8201c; text-shadow: 0 0 4px #c8201c, 0 0 10px #8f1512; animation-timing-function: step-end; }
+  88.6%   { color: #2a0605; text-shadow: none; animation-timing-function: step-end; }
+  89.4%   { color: #c8201c; text-shadow: 0 0 6px #c8201c, 0 0 16px #8f1512, 0 0 30px #4a0a08; animation-timing-function: step-end; }
+  90%     { color: #4a0a08; text-shadow: 0 0 2px #4a0a08; animation-timing-function: ease-in-out; }
+  91%     { color: #c8201c; text-shadow: 0 0 4px #c8201c, 0 0 10px #8f1512, 0 0 22px #4a0a08; animation-timing-function: ease-in-out; }
+  100%    { color: #c8201c; text-shadow: 0 0 4px #c8201c, 0 0 10px #8f1512, 0 0 22px #4a0a08; }
+}
+.neon-flicker {
+  animation: neon-flicker 9s ease-in-out infinite;
+  -webkit-text-stroke: 1.5px #1a0403;
+  paint-order: stroke fill;
+}
+
 .grain {
   position: fixed; inset: -10%; pointer-events: none; z-index: 50; opacity: .09;
   animation: grain .6s steps(3) infinite;
@@ -74,7 +98,7 @@ a, button, [role="button"], input, textarea {
   position: fixed; top: 0; bottom: 0; width: 50.5%; z-index: 60; overflow: hidden;
   background: repeating-linear-gradient(90deg, #1b1d1b 0 3px, #151715 3px 90px), #161816;
   box-shadow: inset 0 0 80px rgba(0, 0, 0, .8);
-  transition: transform .6s cubic-bezier(.7, 0, .3, 1);
+  transition: transform .4s cubic-bezier(.7, 0, .3, 1);
 }
 .door-l { left: 0; border-right: 2px solid #050505; }
 .door-r { right: 0; border-left: 2px solid #050505; }
@@ -105,6 +129,6 @@ a, button, [role="button"], input, textarea {
 .contact-bg { background: radial-gradient(ellipse at center, #1a0606 0, #0a0b0a 65%); }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .ecg-anim, .pulse-soft, .pulse-fast { animation: none; }
+  .grain, .ecg-anim, .pulse-soft, .pulse-fast, .neon-flicker { animation: none; }
   .door { transition: none; }
 }
