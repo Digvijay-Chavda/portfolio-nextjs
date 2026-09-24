@@ -59,16 +59,16 @@ export const CASES: CaseFile[] = [
 ];
 
 export const LOADOUT = [
-  { slot: 'PRIMARY', title: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'JavaScript'] },
-  { slot: 'SIDEARM', title: 'State & data', items: ['Zustand', 'TanStack Query', 'Redux Toolkit', 'REST · WebSockets'] },
-  { slot: 'ARMOR', title: 'Styling & UI', items: ['Tailwind CSS', 'shadcn/ui', 'HTML5 · CSS3', 'Figma'] },
-  { slot: 'SUPPLIES', title: 'Tooling', items: ['Jest · Vitest', 'Git · GitLab CI/CD', 'Prisma · PostgreSQL', 'Gemini API · i18n'] },
+  { title: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'JavaScript'] },
+  { title: 'State & data', items: ['Zustand', 'TanStack Query', 'Redux Toolkit', 'REST · WebSockets'] },
+  { title: 'Styling & UI', items: ['Tailwind CSS', 'shadcn/ui', 'HTML5 · CSS3', 'Figma'] },
+  { title: 'Tooling', items: ['Jest · Vitest', 'Git · GitLab CI/CD', 'Prisma · PostgreSQL', 'Gemini API · i18n'] },
 ];
 
 export const CHAPTERS = [
   { when: '2018 – 2021', title: 'Diploma, ICT', body: 'Marwadi University, Rajkot. CGPA 9.12.' },
   { when: '2021 – 2024', title: 'B.Tech, ICT', body: 'Marwadi University, Rajkot. CGPA 8.84.' },
-  { when: 'MAY 2023 – PRESENT', title: 'ZURU Tech', body: 'Software Engineer (React.js), Online Services. Seven products since.' },
+  { when: 'MAY 2023 – PRESENT', title: 'ZURU Tech', body: 'Software Engineer (React.js), Online Services.' },
 ];
 
 // [nav label, section id, door label, key]

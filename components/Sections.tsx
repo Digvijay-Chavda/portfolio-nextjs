@@ -1,5 +1,5 @@
 import { CHAPTERS, CONTACT, LOADOUT } from '@/data/content';
-import { asset } from '@/lib/asset';
+import { NeonText } from './NeonText';
 
 const sectionPad = 'mx-auto max-w-[1320px] px-[clamp(18px,4vw,32px)] py-[clamp(56px,8vw,90px)]';
 const h2 = 'm-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]';
@@ -10,8 +10,7 @@ export function Loadout() {
       <h2 className={`${h2} mb-10`}>Skills</h2>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-0.5 bg-bone/10">
         {LOADOUT.map(g => (
-          <div key={g.slot} className="flex flex-col gap-4 bg-ink p-[30px]">
-            <span className="font-cond text-[13px] tracking-[.3em] text-blood">{g.slot}</span>
+          <div key={g.title} className="flex flex-col gap-4 bg-ink p-[30px]">
             <span className="font-display text-[30px] font-extrabold uppercase leading-none">{g.title}</span>
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
               {g.items.map(i => (
@@ -57,12 +56,14 @@ export function Contact() {
       id="contact"
       className="contact-bg relative flex min-h-screen flex-col items-center justify-center gap-[26px] px-[clamp(18px,4vw,32px)] py-24 text-center"
     >
-      <h2 className="m-0 font-display text-[clamp(60px,10.5vw,170px)] font-black leading-[.82] tracking-[.02em] text-blood">INTERESTED?</h2>
+      <h2 className="m-0 font-display text-[clamp(60px,10.5vw,170px)] font-black leading-[.82] tracking-[.02em] text-blood">
+        <NeonText text="INTERESTED?" />
+      </h2>
       <div className="flex flex-wrap justify-center gap-3.5 font-cond text-[17px] uppercase tracking-[.24em]">
         <a href={`mailto:${CONTACT.email}`} className="bg-bone px-[30px] py-4 text-ink no-underline transition-colors hover:bg-white hover:text-ink">
           Yes · Send email
         </a>
-        <a href={asset(CONTACT.resume)} download="Digvijay_Chavda_Resume.pdf" className="border border-bone/45 px-[30px] py-4 no-underline">
+        <a href={CONTACT.resume} download="Digvijay_Chavda_Resume.pdf" className="border border-bone/45 px-[30px] py-4 no-underline">
           Download resume
         </a>
       </div>

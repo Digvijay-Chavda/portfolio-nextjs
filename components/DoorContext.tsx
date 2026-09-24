@@ -11,7 +11,7 @@ type DoorApi = {
 };
 
 const DoorCtx = createContext<DoorApi | null>(null);
-const CLOSE_MS = 650;
+const CLOSE_MS = 420;
 
 export function DoorProvider({ children }: { children: ReactNode }) {
   // Doors start closed; the loader opens them when it finishes.
@@ -26,7 +26,7 @@ export function DoorProvider({ children }: { children: ReactNode }) {
     setDoor(d => ({ ...d, closed: false }));
   }, []);
 
-  const runDoors = useCallback<DoorApi['runDoors']>((kicker, text, onClosed, holdMs = 450) => {
+  const runDoors = useCallback<DoorApi['runDoors']>((kicker, text, onClosed, holdMs = 260) => {
     if (closedRef.current) return; // ignore clicks mid-transition
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return onClosed();
     closedRef.current = true;
