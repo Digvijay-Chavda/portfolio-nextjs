@@ -7,16 +7,16 @@ const h2 = 'm-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase l
 export function Loadout() {
   return (
     <section id="loadout" className={sectionPad}>
-      <h2 className={`${h2} mb-10`}>Skills</h2>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-0.5 bg-bone/10">
+      <h2 className={`${h2} mb-6 md:mb-10`}>Skills</h2>
+      <div className="grid grid-cols-2 gap-0.5 bg-bone/10 md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
         {LOADOUT.map(g => (
-          <div key={g.title} className="flex flex-col gap-4 bg-ink p-[30px]">
-            <span className="font-display text-[30px] font-extrabold uppercase leading-none">{g.title}</span>
-            <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          <div key={g.title} className="flex flex-col gap-2.5 bg-ink p-4 md:gap-4 md:p-[30px]">
+            <span className="font-display text-lg font-extrabold uppercase leading-none md:text-[30px]">{g.title}</span>
+            <ul className="m-0 flex list-none flex-col gap-1.5 p-0 md:gap-2">
               {g.items.map(i => (
-                <li key={i} className="flex justify-between border-b border-bone/10 pb-2 text-[17px]">
+                <li key={i} className="flex justify-between border-b border-bone/10 pb-1.5 text-sm md:pb-2 md:text-[17px]">
                   <span>{i}</span>
-                  <span aria-hidden className="font-cond text-dim">■</span>
+                  <span aria-hidden className="hidden font-cond text-dim md:inline">■</span>
                 </li>
               ))}
             </ul>

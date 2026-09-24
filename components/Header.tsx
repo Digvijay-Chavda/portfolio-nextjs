@@ -1,20 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NAV } from '@/data/content';
 import { useEnterSection } from './DoorContext';
 import { FLATLINE_EVENT } from './Hero';
 
-// Index by bar count (1-4): weak signal reads red, mid reads amber, strong reads vital green.
-const SIGNAL_COLOR = ['#c8201c', '#c8201c', '#e0a52c', '#7bd86b', '#7bd86b'] as const;
-
-const ECG_NORMAL = '0,15 18,15 24,15 28,5 32,25 36,11 40,15 60,15 66,15 70,5 74,25 78,11 82,15 120,15';
-const ECG_FLAT = '0,15 120,15';
-
-/** Signal-strength bars and the hero's flatline event, coordinated in one hook so the
- * bar-randomizing interval pauses while flatlined instead of ticking uselessly underneath it. */
+/** The hero's flatline event doubles as the recording widget's drop-signal cue. */
 function useHudState() {
-  const [bars, setBars] = useState(3);
   const [flat, setFlat] = useState(false);
 
   useEffect(() => {
@@ -23,33 +15,52 @@ function useHudState() {
     return () => window.removeEventListener(FLATLINE_EVENT, onFlatline);
   }, []);
 
-  useEffect(() => {
-    if (flat || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = setInterval(() => setBars(1 + Math.floor(Math.random() * 4)), 5000);
-    return () => clearInterval(id);
-  }, [flat]);
+  return { flat };
+}
 
-  return { bars, flat };
+const GLYPHS = 'ABCDEFGHJKLMNPRSTUVXYZ0123456789#%&@$/<>*';
+const pick = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+
+/** Same decode-glyph mechanic as ScrambleName, but driven by `active` instead of running once on mount:
+ * cycles random glyphs while active, locks to the real word the instant it turns false. */
+function ScrambleWord({ word, active }: { word: string; active: boolean }) {
+  const spanRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = spanRef.current;
+    if (!el) return;
+    if (!active || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = word;
+      return;
+    }
+    const id = setInterval(() => {
+      el.textContent = word.split('').map(pick).join('');
+    }, 60);
+    return () => clearInterval(id);
+  }, [word, active]);
+
+  return <span ref={spanRef}>{word}</span>;
 }
 
 function StatusHud() {
-  const { bars, flat } = useHudState();
-  const color = flat ? '#c8201c' : SIGNAL_COLOR[bars];
-  const label = flat ? 'FLATLINE' : 'Online';
+  const { flat } = useHudState();
+  const label = flat ? 'Error' : 'Live';
 
   return (
-    <div className="flex min-w-[170px] shrink-0 justify-end md:min-w-[230px]">
-      <div title="System status: online" className="flex h-[34px] items-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3">
-        <svg viewBox="0 0 120 30" preserveAspectRatio="none" className="block h-5 w-16 transition-colors duration-300 md:w-[120px]" style={{ color }}>
-          <polyline
-            className={flat ? '' : 'ecg-anim'}
-            points={flat ? ECG_FLAT : ECG_NORMAL}
-            fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray={flat ? undefined : '80 160'}
+    <div className="flex shrink-0 justify-end">
+      <div title={flat ? 'Recording: error' : 'Recording: live'} className={`flex h-[34px] w-[132px] items-center justify-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3.5 ${flat ? '' : 'rec-box-glow'}`}>
+        <div className="relative h-3 w-3 shrink-0">
+          <span className={`rec-ring absolute -inset-[5px] rounded-full border border-blood transition-opacity duration-300 ${flat ? 'opacity-0' : 'opacity-100'}`} />
+          <span
+            className={`absolute inset-0 rounded-full transition-colors duration-300 ${flat ? '' : 'rec-dot'}`}
+            style={{ background: flat ? '#3a1210' : 'var(--color-blood)', boxShadow: flat ? 'none' : '0 0 6px rgba(200,32,28,.8)' }}
           />
-        </svg>
-        <div className="flex flex-col items-center gap-[3px] leading-none">
-          <span className="font-cond text-[10px] uppercase tracking-[.2em] text-muted">System status</span>
-          <span className="pl-[.1em] text-center font-display text-[15px] font-black uppercase tracking-[.1em]" style={{ color: flat ? '#c8201c' : 'var(--color-vital)' }}>{label}</span>
+        </div>
+        <div className="flex flex-col items-center gap-[3px] text-center leading-none">
+          <span className="font-cond text-[10px] uppercase tracking-[.2em] text-muted">Recording</span>
+          <span className={`font-display text-[15px] font-black uppercase tracking-[.12em] text-blood ${flat ? 'text-glitch' : ''}`}>
+            <ScrambleWord word={label} active={flat} />
+          </span>
         </div>
       </div>
     </div>
@@ -60,7 +71,13 @@ export function Header() {
   const enter = useEnterSection();
   return (
     <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-4 border-b border-bone/8 bg-ink/90 px-[clamp(18px,4vw,32px)] py-3.5 backdrop-blur-md">
-      <span className="font-display text-[22px] font-black tracking-[.08em]">DC<span className="text-blood">.</span></span>
+      <svg viewBox="0 0 36 24" aria-label="DC" role="img" className="h-6 w-9 shrink-0 text-bone">
+        <path d="M2 12 Q18 22 34 12" fill="none" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M8 9 L11 16" stroke="var(--color-blood)" strokeWidth="1.6" />
+        <path d="M15 13 L18 20" stroke="var(--color-blood)" strokeWidth="1.6" />
+        <path d="M22 13 L25 20" stroke="var(--color-blood)" strokeWidth="1.6" />
+        <path d="M28 10 L31 17" stroke="var(--color-blood)" strokeWidth="1.6" />
+      </svg>
       <nav aria-label="Sections" className="absolute left-1/2 hidden -translate-x-1/2 flex-wrap gap-[26px] font-cond text-[15px] uppercase tracking-[.22em] md:flex">
         {NAV.map(n => (
           <button key={n.id} onClick={() => enter(n.id, n.door)} className="py-1 text-bone transition-colors hover:text-blood">

@@ -59,10 +59,28 @@ a, button, [role="button"], input, textarea {
   50% { transform: translate(2%, -3%) } 75% { transform: translate(-2%, -1%) } 100% { transform: translate(0, 0) }
 }
 @keyframes pulse-soft { 0%, 100% { opacity: 1 } 50% { opacity: .35 } }
+@keyframes rec-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .55; transform: scale(.82); } }
+@keyframes rec-ring { 0% { opacity: .55; transform: scale(.4); } 80%, 100% { opacity: 0; transform: scale(1.5); } }
+@keyframes rec-box-glow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(200,32,28,.25), 0 0 10px rgba(200,32,28,.15); }
+  50% { box-shadow: 0 0 0 1px rgba(200,32,28,.55), 0 0 18px rgba(200,32,28,.4); }
+}
+/* Chromatic-aberration style text glitch: red/green channels jitter apart on a jagged step interval. */
+@keyframes text-glitch {
+  0%, 100% { text-shadow: 0 0 0 transparent; transform: translate(0, 0); }
+  20% { text-shadow: -2px 0 var(--color-blood), 2px 0 var(--color-vital); transform: translate(-1px, 0); }
+  22% { text-shadow: 2px 0 var(--color-blood), -2px 0 var(--color-vital); transform: translate(1px, 0); }
+  24% { text-shadow: 0 0 0 transparent; transform: translate(0, 0); }
+  62% { text-shadow: 1px 0 var(--color-blood), -1px 0 var(--color-vital); transform: translate(1px, 0); }
+  64% { text-shadow: -1px 0 var(--color-blood), 1px 0 var(--color-vital); transform: translate(-1px, 0); }
+  66% { text-shadow: 0 0 0 transparent; transform: translate(0, 0); }
+}
 
 .pulse-soft { animation: pulse-soft 2.4s infinite; }
 .pulse-fast { animation: pulse-soft 1s infinite; }
 .ecg-anim { animation: ecg 1.6s linear infinite; filter: drop-shadow(0 0 4px currentColor); }
+.rec-box-glow { animation: rec-box-glow 3.2s ease-in-out infinite; }
+.text-glitch { animation: text-glitch 2.4s steps(1) infinite; }
 
 /* Neon motel-sign flicker: a slow smooth wine-red breathing glow, punctuated by one
    quick short-circuit-style stutter burst per cycle rather than a mechanical step pattern.
@@ -128,7 +146,10 @@ a, button, [role="button"], input, textarea {
 
 .contact-bg { background: radial-gradient(ellipse at center, #1a0606 0, #0a0b0a 65%); }
 
+.rec-dot { animation: rec-pulse 1.8s ease-in-out infinite; }
+.rec-ring { animation: rec-ring 1.8s ease-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
-  .grain, .ecg-anim, .pulse-soft, .pulse-fast, .neon-flicker { animation: none; }
+  .grain, .ecg-anim, .pulse-soft, .pulse-fast, .neon-flicker, .rec-dot, .rec-ring, .rec-box-glow, .text-glitch { animation: none; }
   .door { transition: none; }
 }
