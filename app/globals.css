@@ -65,6 +65,15 @@ a, button, [role="button"], input, textarea {
   0%, 100% { box-shadow: 0 0 0 1px rgba(200,32,28,.25), 0 0 10px rgba(200,32,28,.15); }
   50% { box-shadow: 0 0 0 1px rgba(200,32,28,.55), 0 0 18px rgba(200,32,28,.4); }
 }
+/* Classified watermark drift: the repeated "TOP SECRET" texture loops around all four
+   edges (left → top → right → bottom → back) instead of panning in one straight line. */
+@keyframes stamp-drift {
+  0%   { transform: rotate(-18deg) translate(0, 0); }
+  25%  { transform: rotate(-18deg) translate(-70px, -110px); }
+  50%  { transform: rotate(-18deg) translate(90px, -70px); }
+  75%  { transform: rotate(-18deg) translate(60px, 90px); }
+  100% { transform: rotate(-18deg) translate(0, 0); }
+}
 /* Chromatic-aberration style text glitch: red/green channels jitter apart on a jagged step interval. */
 @keyframes text-glitch {
   0%, 100% { text-shadow: 0 0 0 transparent; transform: translate(0, 0); }
@@ -81,6 +90,7 @@ a, button, [role="button"], input, textarea {
 .ecg-anim { animation: ecg 1.6s linear infinite; filter: drop-shadow(0 0 4px currentColor); }
 .rec-box-glow { animation: rec-box-glow 3.2s ease-in-out infinite; }
 .text-glitch { animation: text-glitch 2.4s steps(1) infinite; }
+.stamp-drift { animation: stamp-drift 16s ease-in-out infinite; }
 
 /* Neon motel-sign flicker: a slow smooth wine-red breathing glow, punctuated by one
    quick short-circuit-style stutter burst per cycle rather than a mechanical step pattern.
@@ -150,6 +160,6 @@ a, button, [role="button"], input, textarea {
 .rec-ring { animation: rec-ring 1.8s ease-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .ecg-anim, .pulse-soft, .pulse-fast, .neon-flicker, .rec-dot, .rec-ring, .rec-box-glow, .text-glitch { animation: none; }
+  .grain, .ecg-anim, .pulse-soft, .pulse-fast, .neon-flicker, .rec-dot, .rec-ring, .rec-box-glow, .text-glitch, .stamp-drift { animation: none; }
   .door { transition: none; }
 }

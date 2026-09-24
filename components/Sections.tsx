@@ -1,5 +1,6 @@
 import { CHAPTERS, CONTACT, LOADOUT } from '@/data/content';
 import { NeonText } from './NeonText';
+import { ScrambleText } from './ScrambleText';
 
 const sectionPad = 'mx-auto max-w-[1320px] px-[clamp(18px,4vw,32px)] py-[clamp(56px,8vw,90px)]';
 const h2 = 'm-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase leading-[.9]';
@@ -7,7 +8,7 @@ const h2 = 'm-0 font-display text-[clamp(56px,7vw,104px)] font-black uppercase l
 export function Loadout() {
   return (
     <section id="loadout" className={sectionPad}>
-      <h2 className={`${h2} mb-6 md:mb-10`}>Skills</h2>
+      <h2 className={`${h2} mb-6 md:mb-10`}><ScrambleText text="Skills" /></h2>
       <div className="grid grid-cols-2 gap-0.5 bg-bone/10 md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
         {LOADOUT.map(g => (
           <div key={g.title} className="flex flex-col gap-2.5 bg-ink p-4 md:gap-4 md:p-[30px]">
@@ -30,7 +31,7 @@ export function Loadout() {
 export function Chapters() {
   return (
     <section id="chapters" className={sectionPad}>
-      <h2 className={`${h2} mb-[50px]`}>Chapters</h2>
+      <h2 className={`${h2} mb-[50px]`}><ScrambleText text="Chapters" /></h2>
       {/* Vertical timeline on mobile, horizontal on desktop */}
       <ol className="relative m-0 flex list-none flex-col gap-[34px] p-0 md:grid md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] md:gap-[26px]">
         <span
