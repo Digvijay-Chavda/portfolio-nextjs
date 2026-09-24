@@ -59,11 +59,11 @@ export function Contact() {
       <h2 className="m-0 font-display text-[clamp(60px,10.5vw,170px)] font-black leading-[.82] tracking-[.02em] text-blood">
         <NeonText text="INTERESTED?" />
       </h2>
-      <div className="flex flex-wrap justify-center gap-3.5 font-cond text-base uppercase tracking-[.24em] md:text-[17px]">
-        <a href={`mailto:${CONTACT.email}`} className="bg-bone px-[30px] py-4 text-ink no-underline transition-colors hover:bg-white hover:text-ink">
+      <div className="flex flex-wrap justify-center gap-3 font-cond text-sm uppercase tracking-[.2em] md:gap-3.5 md:text-[17px] md:tracking-[.24em]">
+        <a href={`mailto:${CONTACT.email}`} className="bg-bone px-6 py-3 text-ink md:px-[30px] md:py-4 no-underline transition-colors hover:bg-white hover:text-ink">
           Yes · Send email
         </a>
-        <a href={CONTACT.resume} download="Digvijay_Chavda_Resume.pdf" className="border border-bone/45 px-[30px] py-4 no-underline">
+        <a href={CONTACT.resume} download="Digvijay_Chavda_Resume.pdf" className="border border-bone/45 px-6 py-3 no-underline md:px-[30px] md:py-4">
           Download resume
         </a>
       </div>
