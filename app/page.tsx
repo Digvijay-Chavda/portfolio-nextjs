@@ -1,5 +1,5 @@
-import Portfolio from '@/components/Portfolio';
+import { ThemeGate } from '@/components/ThemeGate';
 
 export default function Page() {
-  return <Portfolio />;
+  return <ThemeGate />;
 }

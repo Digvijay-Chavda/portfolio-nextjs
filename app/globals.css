@@ -13,42 +13,95 @@
   --font-display: var(--font-big-shoulders), sans-serif;
   --font-cond: var(--font-barlow-cond), sans-serif;
   --font-sans: var(--font-barlow), system-ui, sans-serif;
+  --font-pro-sans: var(--font-inter), system-ui, sans-serif;
+  --font-pro-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+/* Professional theme's palette, as plain runtime custom properties (not @theme tokens)
+   so [data-pro-mode="dark"] below can swap their values — Tailwind's compiled utility
+   classes can't be re-themed at runtime, but `bg-(--color-pro-bg)` etc. read these live.
+   Navy/teal base in both modes, light first: :root holds the light palette (the theme's
+   default and what the server renders, so there's no light→dark flash on load or
+   hydration mismatch from useProMode's default); dark derives from the same hues
+   instead of a plain unrelated palette, so the two modes read as one identity. */
+:root {
+  --color-pro-bg: #f4f7fb;
+  --color-pro-surface: #ffffff;
+  --color-pro-ink: #0a192f;
+  --color-pro-muted: #4c5b6e;
+  --color-pro-accent: #0d8c73;
+  --color-pro-accent-soft: rgba(13, 140, 115, .1);
+  --color-pro-line: #d9e1ec;
+}
+[data-pro-mode="dark"] {
+  --color-pro-bg: #0a192f;
+  --color-pro-surface: #112240;
+  --color-pro-ink: #ccd6e6;
+  --color-pro-muted: #8a99b3;
+  --color-pro-accent: #64ffda;
+  --color-pro-accent-soft: rgba(100, 255, 218, .1);
+  --color-pro-line: #233554;
 }
 
 @layer base {
-  html, body {
+  /* html alone, not body: overflow-x on body would make body itself the sticky-positioning
+     containing block instead of the real viewport, breaking `position: sticky` for any
+     child (the Professional theme's sidebar in particular). html already clips horizontal
+     overflow for the whole document, so body doesn't also need to. */
+  html {
     overflow-x: hidden;
   }
+  /* Professional is the real default site (server-rendered, no selection screen), so
+     body's own background and scrollbar match its palette — .theme-evil below
+     overrides both once the Evil theme is active. */
   body {
     margin: 0;
-    background: var(--color-ink);
-    color: var(--color-bone);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    -webkit-user-select: none;
-    user-select: none;
+    background: var(--color-pro-bg);
   }
   a { color: inherit; }
-  a:hover { color: var(--color-blood); }
 
   html {
-    scrollbar-color: var(--color-blood) var(--color-panel);
+    scrollbar-color: var(--color-pro-accent) var(--color-pro-surface);
   }
-  ::-webkit-scrollbar { width: 12px; }
-  ::-webkit-scrollbar-track { background: var(--color-panel); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-blood);
-    border: 2px solid var(--color-panel);
-    border-radius: 999px;
-  }
-  ::-webkit-scrollbar-thumb:hover { background: #e5302a; }
 }
 
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--color-pro-surface); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-pro-accent);
+  border: 2px solid var(--color-pro-surface);
+  border-radius: 999px;
+}
+
+/* Everything below is specific to the Evil (horror/case-file) theme and only applies
+   once <html> carries .theme-evil — the Professional theme and the theme-selection
+   screen get the browser's own default background/cursor/selection instead. */
+.theme-evil body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.theme-evil a:hover { color: var(--color-blood); }
+.theme-evil { scrollbar-color: var(--color-blood) var(--color-panel); }
+
+.theme-evil ::-webkit-scrollbar { width: 12px; }
+.theme-evil ::-webkit-scrollbar-track { background: var(--color-panel); }
+.theme-evil ::-webkit-scrollbar-thumb {
+  background: var(--color-blood);
+  border: 2px solid var(--color-panel);
+  border-radius: 999px;
+}
+.theme-evil ::-webkit-scrollbar-thumb:hover { background: #e5302a; }
+
 /* Custom cursors: bone arrow everywhere, red crosshair on interactive elements */
-html, body {
+.theme-evil html, .theme-evil body {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cpath%20d%3D%27M3%202%20L3%2026%20L9%2020.5%20L13.2%2029.5%20L17.4%2027.6%20L13.3%2018.8%20L21%2018.8%20Z%27%20fill%3D%27%23dcd6c8%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%271.6%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cpath%20d%3D%27M5%207%20L5%2021%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Ccircle%20cx%3D%273.2%27%20cy%3D%272.4%27%20r%3D%271.6%27%20fill%3D%27%23c8201c%27%2F%3E%3C%2Fsvg%3E") 3 2, auto;
 }
-a, button, [role="button"], input, textarea {
+.theme-evil a, .theme-evil button, .theme-evil [role="button"], .theme-evil input, .theme-evil textarea {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27rgba%28220%2C214%2C200%2C.12%29%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.2%27%2F%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%274.2%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E") 13 13, pointer !important;
 }
 
