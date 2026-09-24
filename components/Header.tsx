@@ -48,7 +48,7 @@ function StatusHud() {
 
   return (
     <div className="flex shrink-0 justify-end">
-      <div title={flat ? 'Recording: error' : 'Recording: live'} className={`flex h-9 w-[152px] items-center md:h-[34px] md:w-[132px] justify-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3.5 ${flat ? '' : 'rec-box-glow'}`}>
+      <div title={flat ? 'Recording: error' : 'Recording: live'} className={`flex h-[34px] w-[112px] items-center justify-center gap-2.5 whitespace-nowrap border border-bone/20 bg-black/55 px-3.5 ${flat ? '' : 'rec-box-glow'}`}>
         <div className="relative h-3 w-3 shrink-0">
           <span className={`rec-ring absolute -inset-[5px] rounded-full border border-blood transition-opacity duration-300 ${flat ? 'opacity-0' : 'opacity-100'}`} />
           <span
@@ -57,7 +57,6 @@ function StatusHud() {
           />
         </div>
         <div className="flex flex-col items-center gap-[3px] text-center leading-none">
-          <span className="font-cond text-xs uppercase tracking-[.2em] text-muted md:text-[10px]">Recording</span>
           <span className={`font-display text-base font-black uppercase tracking-[.12em] text-blood md:text-[15px] ${flat ? 'text-glitch' : ''}`}>
             <ScrambleWord word={label} active={flat} />
           </span>
