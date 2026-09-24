@@ -27,6 +27,24 @@ export function Hero({ ready }: { ready: boolean }) {
     el.style.setProperty('--y', `${clientY - r.top}px`);
   };
 
+  // Fires the burst if one isn't already running; shared by the auto-trigger interval and the manual click.
+  const trigger = () => {
+    const ghostA = ghostARef.current;
+    const ghostB = ghostBRef.current;
+    const scan = scanRef.current;
+    const flash = flashRef.current;
+    if (busy.current || !ghostA || !ghostB || !scan || !flash) return;
+    busy.current = true;
+    window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: true } }));
+    cancelBurst.current = staticBurst({
+      ghostA, ghostB, scan, flash,
+      onDone: () => {
+        busy.current = false;
+        window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: false } }));
+      },
+    });
+  };
+
   // Fires the signal-loss burst on its own, at an unpredictable interval, independent of user interaction.
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -35,36 +53,26 @@ export function Hero({ ready }: { ready: boolean }) {
     const nextDelay = () => 4000 + Math.random() * Math.random() * 10000;
 
     let timer: ReturnType<typeof setTimeout>;
-    const schedule = (ms: number) => { timer = setTimeout(trigger, ms); };
-
-    const trigger = () => {
-      const ghostA = ghostARef.current;
-      const ghostB = ghostBRef.current;
-      const scan = scanRef.current;
-      const flash = flashRef.current;
-      if (!busy.current && ghostA && ghostB && scan && flash) {
-        busy.current = true;
-        window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: true } }));
-        cancelBurst.current = staticBurst({
-          ghostA, ghostB, scan, flash,
-          onDone: () => {
-            busy.current = false;
-            window.dispatchEvent(new CustomEvent(FLATLINE_EVENT, { detail: { active: false } }));
-          },
-        });
-      }
-      schedule(nextDelay());
-    };
+    const schedule = (ms: number) => { timer = setTimeout(tick, ms); };
+    const tick = () => { trigger(); schedule(nextDelay()); };
 
     schedule(nextDelay());
     return () => clearTimeout(timer);
   }, []);
+
+  // Manual replay, desktop only: the mouse-driven flashlight already owns touch/hover on mobile,
+  // and a tap-to-trigger there would fight scrolling.
+  const handleHeroClick = () => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    trigger();
+  };
 
   return (
     <section
       id="hero"
       onMouseMove={e => moveLight(e.clientX, e.clientY)}
       onTouchMove={e => e.touches[0] && moveLight(e.touches[0].clientX, e.touches[0].clientY)}
+      onClick={handleHeroClick}
       className="relative flex min-h-screen items-end overflow-hidden bg-[#0d0f0d]"
     >
       {/* Plain <img>: static export has next/image's optimizer disabled anyway, and object-position needs a percentage next/image doesn't accept. */}
