@@ -9,8 +9,10 @@ export const NAV_PRO = [
   { label: 'Contact', id: 'contact' },
 ] as const;
 
+export const SIDEBAR_BIO = 'I turn product requirements into fast, typed, well-tested frontend.';
+
 export const HERO_PRO = {
   greeting: "Hi, I'm Digvijay 👋",
   headline: 'Software developer building interfaces that ship, not just demo.',
-  lede: 'Specialized in React, TypeScript and Next.js for production — with a growing focus on AI: RAG, tool-calling agents, LLM-powered tools.',
-};
+  lede: "I'm a software engineer working mainly in React, TypeScript, and Next.js, with 3+ years at ZURU Tech across chat, compliance, and account-management products. Most of what I do comes down to building frontend that scales well made reusable components, state that doesn't turn into spaghetti, and cleaning up legacy code as I go. I also have a growing interest in AI, particularly RAG, tool-calling agents, and LLM-powered tools.",
+}

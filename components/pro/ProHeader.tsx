@@ -2,37 +2,22 @@
 
 import { useEffect, useState } from 'react';
 import { CONTACT } from '@/data/content';
-import { NAV_PRO } from '@/data/content-pro';
+import { NAV_PRO, SIDEBAR_BIO } from '@/data/content-pro';
 import { useProMode } from './useProMode';
 
 function ModeToggle({ mode, toggle, compact }: { mode: 'light' | 'dark'; toggle: () => void; compact?: boolean }) {
   return (
     <button
       onClick={toggle}
-      className="inline-flex items-center gap-2 self-start rounded-full border border-(--color-pro-line) bg-(--color-pro-surface) px-3 py-1.5 text-xs text-(--color-pro-muted) transition-colors hover:border-(--color-pro-accent) hover:text-(--color-pro-ink)"
+      className={`flex items-center gap-2 rounded-full border border-(--color-pro-line) bg-(--color-pro-surface) py-1.5 text-xs text-(--color-pro-muted) transition-colors hover:border-(--color-pro-accent) hover:text-(--color-pro-ink) ${
+        compact ? 'px-2.5' : 'w-full px-3'
+      }`}
     >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 shrink-0">
         <circle cx="12" cy="12" r="4" />
         <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
       </svg>
-      {!compact && <span>{mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>}
-    </button>
-  );
-}
-
-function ExploreEvilLink({ onExploreEvil, compact }: { onExploreEvil: () => void; compact?: boolean }) {
-  return (
-    <button
-      onClick={onExploreEvil}
-      title="Switch to the Fantasy theme"
-      className={`inline-flex items-center gap-2 self-start rounded-full border border-dashed border-(--color-pro-accent) text-(--color-pro-accent) transition-colors hover:border-solid hover:bg-(--color-pro-accent-soft) ${
-        compact ? 'px-2.5 py-1.5' : 'px-3 py-1.5 text-xs'
-      }`}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
-        <path d="M12 2 L14.5 8.5 L21 11 L14.5 13.5 L12 20 L9.5 13.5 L3 11 L9.5 8.5 Z" />
-      </svg>
-      {!compact && <span>Explore Fantasy theme</span>}
+      {!compact && <span>{mode === 'dark' ? 'Day mode' : 'Night mode'}</span>}
     </button>
   );
 }
@@ -43,7 +28,7 @@ function scrollToSection(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export function ProHeader({ onExploreEvil }: { onExploreEvil?: () => void }) {
+export function ProHeader() {
   const { mode, toggle } = useProMode();
   const [active, setActive] = useState<string>(NAV_PRO[0].id);
 
@@ -73,7 +58,7 @@ export function ProHeader({ onExploreEvil }: { onExploreEvil?: () => void }) {
             Software Developer
           </p>
           <p className="m-0 max-w-[30ch] text-sm leading-relaxed text-(--color-pro-muted)">
-            I build production interfaces with React, TypeScript and Next.js — with a growing focus on AI-powered tools.
+            {SIDEBAR_BIO}
           </p>
 
           <nav className="mt-12 flex flex-col gap-3.5">
@@ -96,7 +81,6 @@ export function ProHeader({ onExploreEvil }: { onExploreEvil?: () => void }) {
         </div>
 
         <div className="flex flex-col gap-4.5">
-          {onExploreEvil && <ExploreEvilLink onExploreEvil={onExploreEvil} />}
           <ModeToggle mode={mode} toggle={toggle} />
           <div className="flex gap-4.5">
             <a href={CONTACT.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="text-(--color-pro-muted) transition-colors hover:text-(--color-pro-accent)">
@@ -110,10 +94,9 @@ export function ProHeader({ onExploreEvil }: { onExploreEvil?: () => void }) {
       </aside>
 
       {/* Mobile: simple top bar */}
-      <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-(--color-pro-line) bg-(--color-pro-bg) px-5 py-4 md:hidden">
-        <span className="text-[17px] font-extrabold text-(--color-pro-ink)">Digvijay Chavda</span>
-        <div className="flex items-center gap-2">
-          {onExploreEvil && <ExploreEvilLink onExploreEvil={onExploreEvil} compact />}
+      <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-(--color-pro-line) bg-(--color-pro-bg) px-4 py-3 sm:px-5 sm:py-4 md:hidden">
+        <span className="truncate text-[15px] font-extrabold text-(--color-pro-ink) sm:text-[17px]">Digvijay Chavda</span>
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <ModeToggle mode={mode} toggle={toggle} compact />
         </div>
       </div>

@@ -35,9 +35,17 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: '#0a0b0a' };
 
+// Runs synchronously before React hydrates, so a returning Evil-preferring visitor's
+// reload doesn't show a frame of Professional content — ThemeGate reads this same
+// data attribute to cover the screen instantly until the real Evil DOM is ready.
+const THEME_BOOT_SCRIPT = `try{var t=window.localStorage.getItem('portfolio:theme');if(t==='evil')document.documentElement.dataset.themeBoot='evil';}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${cond.variable} ${sans.variable} ${proSans.variable} ${proMono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   );

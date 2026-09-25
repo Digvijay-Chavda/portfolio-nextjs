@@ -6,10 +6,13 @@ export function ProSkills() {
   return (
     <section id="loadout" className="scroll-mt-8 py-16 md:py-20">
       <SectionEyebrow num="02" label="Skills" />
-      <ProReveal className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <ProReveal className="grid grid-cols-1 gap-8 @sm:grid-cols-2 @xl:grid-cols-3 @4xl:grid-cols-4">
         {LOADOUT.map(group => (
           <div key={group.title}>
-            <p className="m-0 mb-3 text-[12.5px] font-semibold tracking-[.08em] text-(--color-pro-muted) uppercase">
+            <p
+              className="m-0 mb-3 border-b border-(--color-pro-line) pb-2 text-[12.5px] font-bold tracking-widest text-(--color-pro-accent) uppercase"
+              style={{ fontFamily: 'var(--font-pro-mono)' }}
+            >
               {group.title}
             </p>
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
