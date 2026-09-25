@@ -9,8 +9,8 @@ export function ProProjects() {
 
       <ProReveal className="flex flex-col gap-px overflow-hidden rounded-xl border border-(--color-pro-line) bg-(--color-pro-line)">
         {CASES.map((c, i) => (
-          <div key={c.id} className="grid grid-cols-1 gap-5 bg-(--color-pro-surface) p-6 transition-colors hover:bg-(--color-pro-accent-soft) md:grid-cols-[64px_1fr] md:p-6.5">
-            <span className="text-[22px] font-bold text-(--color-pro-line)" style={{ fontFamily: 'var(--font-pro-mono)' }}>
+          <div key={c.id} className="grid grid-cols-1 gap-5 bg-(--color-pro-surface) p-5 transition-colors hover:bg-(--color-pro-accent-soft) @sm:grid-cols-[64px_1fr] @sm:p-6.5">
+            <span className="text-[22px] font-bold text-(--color-pro-muted) opacity-60" style={{ fontFamily: 'var(--font-pro-mono)' }}>
               {c.no}
             </span>
             <div>

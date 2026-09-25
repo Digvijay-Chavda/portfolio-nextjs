@@ -51,6 +51,19 @@
   html {
     overflow-x: hidden;
   }
+  /* Plain buttons don't get a pointer cursor by default; the Evil theme already gets one
+     via its own custom cursor images below (higher specificity + !important), so this
+     only actually applies to the Professional theme's buttons. */
+  button, [role="button"] {
+    cursor: pointer;
+  }
+  /* Hides the initial Pro paint the instant the boot script (in layout.tsx) detects a
+     stored Evil preference, closing the gap between that script running and ThemeGate's
+     own fade-cover mounting a moment later — otherwise a returning Evil visitor still
+     sees one raw frame of Professional content on a hard reload. */
+  html[data-theme-boot="evil"] body {
+    visibility: hidden;
+  }
   /* Professional is the real default site (server-rendered, no selection screen), so
      body's own background and scrollbar match its palette — .theme-evil below
      overrides both once the Evil theme is active. */
@@ -71,6 +84,81 @@
   background: var(--color-pro-accent);
   border: 2px solid var(--color-pro-surface);
   border-radius: 999px;
+}
+
+/* Professional theme: slow breathing glow, e.g. the "Explore Fantasy theme" link —
+   a calm ambient pulse rather than any glitch/scramble effect, using the theme's own accent.
+   Kept as an INSET shadow rather than an outer halo: the button lives inside the sidebar's
+   <aside>, which has overflow-y-auto (a safety net for tall content) — any effect that
+   paints outside the button's own box gets clipped at the aside's edge no matter how the
+   shadow itself is authored, so the glow has to live inside the box instead of around it. */
+.pro-breathe-glow { animation: pro-breathe-glow 3.2s ease-in-out infinite; }
+@keyframes pro-breathe-glow {
+  0%, 100% { box-shadow: inset 0 0 8px 0 color-mix(in srgb, var(--color-pro-accent) 15%, transparent); }
+  50% { box-shadow: inset 0 0 14px 2px color-mix(in srgb, var(--color-pro-accent) 45%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pro-breathe-glow { animation: none; }
+}
+
+/* "Explore Darkness" link: a slow creeping-shadow pulse (deep red/black, not the calm teal
+   breathing glow above) — something stirring inside the button, foreshadowing the Evil
+   theme's own palette rather than the Professional theme's usual restraint. Also inset,
+   for the same reason as pro-breathe-glow (clipped by the sidebar's overflow-y-auto). */
+.pro-creep-glow { animation: pro-creep-glow 3.6s ease-in-out infinite; }
+@keyframes pro-creep-glow {
+  0%, 100% { box-shadow: inset 0 0 3px 0 rgba(120,10,10,.08); }
+  50% { box-shadow: inset 0 0 6px 0 rgba(180,20,20,.18); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pro-creep-glow { animation: none; }
+}
+
+/* Eye icon inside the "Explore Darkness" link: closed (lid covering it) at rest, opens
+   on hover and its iris glows red — "something wakes up" instead of a static icon. */
+.pro-eye-lid { transition: transform .35s ease; transform-origin: 50% 50%; transform: scaleY(1); }
+.pro-eye-iris { transition: fill .35s ease, filter .35s ease; }
+.group:hover .pro-eye-lid { transform: scaleY(0); }
+.group:hover .pro-eye-iris { fill: #c8201c; filter: drop-shadow(0 0 3px rgba(200,32,28,.8)); }
+
+/* Occasional red/teal chromatic-split glitch jitter on the eye icon — a brief, rare
+   flicker rather than a constant effect, matching the Professional theme's restraint. */
+.pro-eye-glitch { animation: pro-eye-glitch 6s steps(1) infinite; }
+@keyframes pro-eye-glitch {
+  0%, 96%, 100% { transform: translate(0, 0); filter: none; }
+  96.5% { transform: translate(-1.5px, .5px); filter: drop-shadow(-1.5px 0 #c8201c) drop-shadow(1.5px 0 #2fb8b0); }
+  97% { transform: translate(1.5px, -.5px); filter: drop-shadow(1.5px 0 #c8201c) drop-shadow(-1.5px 0 #2fb8b0); }
+  97.5% { transform: translate(0, 0); filter: none; }
+  98% { transform: translate(-1px, .5px); filter: drop-shadow(-1px 0 #c8201c) drop-shadow(1px 0 #2fb8b0); }
+  98.5% { transform: translate(0, 0); filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pro-eye-glitch { animation: none; }
+}
+
+/* The label text itself creeps toward blood-red on hover, a small preview of the theme
+   it leads to, instead of just changing the button chrome around static text. */
+.pro-creep-text { transition: color .4s ease, text-shadow .4s ease; }
+.group:hover .pro-creep-text { color: #c8201c; text-shadow: 0 0 6px rgba(200,32,28,.35); }
+
+/* One brief chromatic-split glitch on the label right as the button finishes expanding —
+   a glimpse of the Evil theme's own glitch-text motif, not a constant effect. */
+.group:hover .pro-creep-text-glitch { animation: pro-creep-text-glitch .5s steps(1) .35s 1; }
+@keyframes pro-creep-text-glitch {
+  0%, 100% { text-shadow: 0 0 6px rgba(200,32,28,.35); transform: translate(0, 0); }
+  20% { text-shadow: -1.5px 0 #c8201c, 1.5px 0 #2fb8b0; transform: translate(-1px, 0); }
+  40% { text-shadow: 1.5px 0 #c8201c, -1.5px 0 #2fb8b0; transform: translate(1px, 0); }
+  60% { text-shadow: -1px 0 #c8201c, 1px 0 #2fb8b0; transform: translate(0, 0); }
+  80% { text-shadow: 0 0 6px rgba(200,32,28,.35); transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .pro-creep-text-glitch { animation: none; }
+}
+
+/* Touch devices: a slight resting transparency on the floating theme-switch FABs hints
+   that they can be picked up and moved, since there's no hover state to discover it. */
+@media (pointer: coarse) {
+  .fab-draggable { opacity: .82; }
 }
 
 /* Everything below is specific to the Evil (horror/case-file) theme and only applies
@@ -103,6 +191,12 @@
 }
 .theme-evil a, .theme-evil button, .theme-evil [role="button"], .theme-evil input, .theme-evil textarea {
   cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27rgba%28220%2C214%2C200%2C.12%29%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%273.2%27%2F%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%271.6%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%274.2%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M19.5%2019.5%20L27%2027%27%20stroke%3D%27%23c8201c%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E") 13 13, pointer !important;
+}
+/* Simple glowing gold dot for the "Revert Darkness" toggle only — no magnifying-glass or
+   crosshair shape (both read as "inspect"/"target", which doesn't fit a banishing action);
+   a soft light appearing fits better, and matches the button's own gold sun icon. */
+.theme-evil .theme-toggle-gold-cursor {
+  cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2732%27%20height%3D%2732%27%20viewBox%3D%270%200%2032%2032%27%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%2210%27%20fill%3D%27%23ffb020%27%20opacity%3D%27.18%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%275%27%20fill%3D%27%23ffb020%27%20stroke%3D%27%230a0b0a%27%20stroke-width%3D%271.6%27%2F%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%272%27%20fill%3D%27%23fff4d6%27%2F%3E%3C%2Fsvg%3E") 16 16, pointer !important;
 }
 
 

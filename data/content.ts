@@ -63,7 +63,7 @@ export const LOADOUT = [
   { title: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'JavaScript'] },
   { title: 'State & data', items: ['Zustand', 'TanStack Query', 'Redux Toolkit', 'REST · WebSockets'] },
   { title: 'Styling & UI', items: ['Tailwind CSS', 'shadcn/ui', 'HTML5 · CSS3', 'Figma'] },
-  { title: 'Tooling', items: ['Jest · Vitest', 'Git · GitLab CI/CD', 'Prisma · PostgreSQL', 'Gemini API · i18n'] },
+  { title: 'Tooling', items: ['Jest · Vitest', 'Git · GitLab CI/CD', 'Prisma · PostgreSQL', 'i18n'] },
 ];
 
 export const CHAPTERS = [

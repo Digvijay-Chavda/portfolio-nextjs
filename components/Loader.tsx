@@ -3,13 +3,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { LOAD_TIPS } from '@/data/content';
 
-const LOAD_MS = 3000;
+const LOAD_MS = 2000;
 const ECG_LEN = 1400;
+
+/** Red → orange → green as loading progresses, like a system coming online. */
+function colorForProgress(q: number): string {
+  if (q < 0.5) return '#c8201c'; // red
+  if (q < 0.85) return '#e0a52c'; // orange
+  return '#7bd86b'; // green
+}
 
 export function Loader({ onDone }: { onDone: () => void }) {
   const pctRef = useRef<HTMLSpanElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const ecgRef = useRef<SVGPathElement>(null);
+  const tipRef = useRef<HTMLSpanElement>(null);
   const [tip, setTip] = useState('');
 
   useEffect(() => {
@@ -22,9 +30,19 @@ export function Loader({ onDone }: { onDone: () => void }) {
       const p = Math.min(1, (performance.now() - t0) / LOAD_MS);
       // Hesitate around 85% before finishing, like a real loader.
       const q = p < 0.85 ? p : 0.85 + (p - 0.85) * (p > 0.93 ? 1 : 0.3);
+      const color = colorForProgress(q);
       if (pctRef.current) pctRef.current.textContent = String(Math.floor(q * 100)).padStart(3, '0');
-      if (barRef.current) barRef.current.style.width = `${q * 100}%`;
-      ecgRef.current?.setAttribute('stroke-dashoffset', (ECG_LEN * (1 - p)).toFixed(0));
+      if (barRef.current) {
+        barRef.current.style.width = `${q * 100}%`;
+        barRef.current.style.background = color;
+        barRef.current.style.boxShadow = `0 0 10px ${color}`;
+      }
+      if (ecgRef.current) {
+        ecgRef.current.setAttribute('stroke-dashoffset', (ECG_LEN * (1 - p)).toFixed(0));
+        ecgRef.current.setAttribute('stroke', color);
+        ecgRef.current.style.filter = `drop-shadow(0 0 6px ${color})`;
+      }
+      if (tipRef.current) tipRef.current.style.color = color;
       if (p < 1) raf = requestAnimationFrame(step);
       else onDone();
     };
@@ -55,7 +73,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
         <span ref={pctRef} className="font-display text-[clamp(84px,14vw,180px)] font-black leading-[.8] tracking-[.02em] text-bone tabular-nums">
           000
         </span>
-        <span className="min-h-[18px] font-cond text-sm uppercase tracking-[.42em] md:text-[15px] text-blood">{tip}</span>
+        <span ref={tipRef} className="min-h-[18px] font-cond text-sm uppercase tracking-[.42em] text-blood md:text-[15px]">{tip}</span>
       </div>
 
       <div className="flex flex-col gap-2.5">
