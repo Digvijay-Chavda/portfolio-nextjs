@@ -6,7 +6,6 @@ import { useBuild } from './BuildProvider';
 const TONE = {
   dim: 'text-(--color-pro-muted)',
   ok: 'text-(--color-pro-accent)',
-  err: 'text-(--color-pro-error)',
 } as const;
 
 /** Bottom-right build console. Expanded while the agent is logging (desktop only),

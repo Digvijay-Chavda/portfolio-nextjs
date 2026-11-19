@@ -1,4 +1,4 @@
-import { AGENT_NAME, bd } from '@/lib/build';
+import { AGENT_NAME, bd, type BuildCorner } from '@/lib/build';
 
 type Props = {
   /** The "element" the agent says it is working on, e.g. `article.card`. */
@@ -7,24 +7,22 @@ type Props = {
   at: number;
   /** Seconds the selection stays on screen. */
   life?: number;
-  tone?: 'ok' | 'err';
   /** Keep the box, tag and cursor inside the parent — for parents that clip overflow. */
   inner?: boolean;
+  /** Corner the cursor settles into; it arrives from the opposite corner. Vary this
+   * between nearby selections so the sweep direction doesn't repeat every time. */
+  corner?: BuildCorner;
 };
 
 /** A dashed selection box dragged out by the agent's cursor, like selecting a layer in a
  * design tool. Purely decorative: aria-hidden, and display:none outside a running build.
  * The parent must be position: relative. */
-export function BuildSelect({ label, at, life = 1.6, tone = 'ok', inner }: Props) {
+export function BuildSelect({ label, at, life = 1.6, inner, corner = 'br' }: Props) {
   return (
-    <span
-      aria-hidden
-      className={`b-sel ${inner ? 'b-sel-inner' : ''} ${tone === 'err' ? 'b-sel-err' : ''}`}
-      style={bd(at, { '--life': life })}
-    >
+    <span aria-hidden className={`b-sel ${inner ? 'b-sel-inner' : ''}`} style={bd(at, { '--life': life })}>
       <span className="b-selbox" />
       <span className="b-seltag">{label}</span>
-      <span className="b-cur">
+      <span className={`b-cur b-cur-${corner}`}>
         <svg viewBox="0 0 20 24">
           <path d="M2 2 L2 20 L7 15 L11 23 L14 22 L10 14 L17 14 Z" />
         </svg>

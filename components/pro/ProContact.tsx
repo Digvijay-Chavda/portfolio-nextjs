@@ -3,6 +3,7 @@ import { bd } from '@/lib/build';
 import { BuildSection } from './build/BuildSection';
 import { BuildSelect } from './build/BuildSelect';
 import { DrawTrace } from './build/DrawTrace';
+import { TypedWords } from './build/TypedWords';
 import { SectionEyebrow } from './SectionEyebrow';
 
 export function ProContact() {
@@ -16,9 +17,11 @@ export function ProContact() {
     >
       <SectionEyebrow num="04" label="Contact" />
       <div className="relative flex flex-col gap-5.5 rounded-2xl border border-(--color-pro-line) bg-(--color-pro-surface) px-6 py-8 sm:px-9 sm:py-11">
-        <BuildSelect label="section.contact" at={0.1} life={1.6} />
+        <BuildSelect label="section.contact" at={0.1} life={2.1} />
         <DrawTrace at={0.2} dur={1.1} radius={16} />
-        <h3 className="b-wipe m-0 text-2xl font-extrabold text-(--color-pro-ink)" style={bd(0.5, { '--dur': 0.7 })}>Let&apos;s work together.</h3>
+        <h3 className="m-0 text-2xl font-extrabold text-(--color-pro-ink)">
+          <TypedWords text="Let's work together." at={0.5} />
+        </h3>
         <p className="b-rise m-0 max-w-[50ch] text-[15px] leading-relaxed text-(--color-pro-muted)" style={bd(0.9)}>
           Open to new opportunities — reach out directly or find me on LinkedIn and GitHub.
         </p>

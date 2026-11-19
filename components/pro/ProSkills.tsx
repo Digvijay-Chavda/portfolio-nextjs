@@ -14,25 +14,28 @@ export function ProSkills() {
       className="scroll-mt-8 py-16 md:py-20"
     >
       <SectionEyebrow num="02" label="Skills" />
-      <div className="relative grid grid-cols-1 gap-8 @sm:grid-cols-2 @xl:grid-cols-3 @4xl:grid-cols-4">
-        <BuildSelect label="div.skills-grid" at={0.1} life={1.5} />
-        {LOADOUT.map((group, i) => (
-          <div key={group.title} className="b-rise" style={bd(0.35 + i * 0.15)}>
-            <p
-              className="m-0 mb-3 border-b border-(--color-pro-line) pb-2 text-[12.5px] font-bold tracking-widest text-(--color-pro-accent) uppercase"
-              style={{ fontFamily: 'var(--font-pro-mono)' }}
-            >
-              {group.title}
-            </p>
-            <ul className="m-0 flex list-none flex-col gap-2 p-0">
-              {group.items.map(item => (
-                <li key={item} className="border-b border-dashed border-(--color-pro-line) py-0.5 text-[14.5px] text-(--color-pro-ink)">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 gap-8 @sm:grid-cols-2 @xl:grid-cols-3 @4xl:grid-cols-4">
+        {LOADOUT.map((group, i) => {
+          const at = 0.35 + i * 0.15;
+          return (
+            <div key={group.title} className="b-materialize relative" style={bd(at)}>
+              <BuildSelect label={`div.${group.title.toLowerCase().replace(/\s+/g, '-')}`} at={at} life={0.7} />
+              <p
+                className="m-0 mb-3 border-b border-(--color-pro-line) pb-2 text-[12.5px] font-bold tracking-widest text-(--color-pro-accent) uppercase"
+                style={{ fontFamily: 'var(--font-pro-mono)' }}
+              >
+                {group.title}
+              </p>
+              <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                {group.items.map(item => (
+                  <li key={item} className="border-b border-dashed border-(--color-pro-line) py-0.5 text-[14.5px] text-(--color-pro-ink)">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </BuildSection>
   );

@@ -17,13 +17,13 @@ export function ProExperience() {
     >
       <SectionEyebrow num="03" label="Experience" />
       <div className="relative pl-7">
-        <BuildSelect label="ol.timeline" at={0.1} life={1.6} />
+        <BuildSelect label="ol.timeline" at={0.1} life={last + 1.1} />
         <span className="absolute top-1.5 bottom-1.5 left-[5px] w-px bg-(--color-pro-line)" />
         <DrawTrace shape="vline" at={0.2} dur={last + 0.2} className="absolute top-1.5 bottom-1.5 left-[5px] h-[calc(100%-12px)] w-px" />
         {CHAPTERS.map((c, i) => {
           const at = 0.4 + i * 0.3;
           return (
-            <div key={c.title} className={`b-rise relative ${i === CHAPTERS.length - 1 ? '' : 'pb-7.5'}`} style={bd(at)}>
+            <div key={c.title} className={`b-materialize relative ${i === CHAPTERS.length - 1 ? '' : 'pb-7.5'}`} style={bd(at)}>
               <span className="b-pop absolute top-1 -left-7 h-[11px] w-[11px] rounded-full border-2 border-(--color-pro-accent) bg-(--color-pro-bg)" style={bd(at)} />
               <p className="m-0 mb-1 text-[12.5px] text-(--color-pro-muted)" style={{ fontFamily: 'var(--font-pro-mono)' }}>{c.when}</p>
               <p className="m-0 mb-1 text-base font-bold text-(--color-pro-ink)">{c.title}</p>
