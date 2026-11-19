@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useRef, useState, type HTMLAttributes } from 'react';
-import { BUILD_SPEED, type BuildSectionId, type BuildStatus, type LogLine } from '@/lib/build';
+import { BUILD_SECTION_IDS, BUILD_SPEED, type BuildSectionId, type BuildStatus, type LogLine } from '@/lib/build';
 import { useBuild } from './BuildProvider';
 
 const StatusContext = createContext<BuildStatus>('done');
@@ -12,15 +12,16 @@ export const useBuildStatus = () => useContext(StatusContext);
 type Props = HTMLAttributes<HTMLElement> & {
   as?: 'section' | 'div';
   buildId: BuildSectionId;
-  /** Start as soon as the page mounts instead of when scrolled into view. */
-  auto?: boolean;
   /** Seconds until every timed child in this section has finished. */
   duration: number;
   log?: LogLine[];
 };
 
 /**
- * One independently-timed chunk of the "AI is building the page" effect. It renders
+ * One independently-timed chunk of the "AI is building the page" effect. Sections build
+ * strictly in BUILD_SECTION_IDS order — sidebar, then hero, then projects, and so on —
+ * each one staying hidden until the previous one has fully finished (BuildProvider's
+ * `activeIndex`), regardless of where the visitor has scrolled to. Renders
  * `data-build="pending" | "run" | "done"`; the CSS in globals.css keys every b-* class off
  * that attribute, so all timing lives in CSS and the children stay plain markup.
  *
@@ -29,10 +30,10 @@ type Props = HTMLAttributes<HTMLElement> & {
  * run     — CSS animations play, delays measured from this moment
  * done    — final, static state: overlays gone, content fully visible
  */
-export function BuildSection({ as: Tag = 'section', buildId, auto, duration, log, children, ...rest }: Props) {
-  const { ready, enabled, runId, log: pushLog, markDone } = useBuild();
-  const ref = useRef<HTMLElement>(null);
+export function BuildSection({ as: Tag = 'section', buildId, duration, log, children, ...rest }: Props) {
+  const { ready, enabled, runId, activeIndex, log: pushLog, markDone } = useBuild();
   const [status, setStatus] = useState<BuildStatus>('pending');
+  const myIndex = BUILD_SECTION_IDS.indexOf(buildId);
 
   // Latest log/markDone without restarting the run timer when their identity changes.
   const logRef = useRef(log);
@@ -40,45 +41,30 @@ export function BuildSection({ as: Tag = 'section', buildId, auto, duration, log
   const callbacks = useRef({ pushLog, markDone });
   callbacks.current = { pushLog, markDone };
 
+  // Resets to pending on mount and on every replay (runId bump) — or straight to done
+  // when the build effect is off (reduced motion, a skipped/already-seen build).
   useEffect(() => {
     if (!ready) return;
-    if (!enabled) {
-      setStatus('done');
-      return;
-    }
-    setStatus('pending');
-    const el = ref.current;
-    if (!el) return;
+    setStatus(enabled ? 'pending' : 'done');
+  }, [ready, enabled, runId]);
 
-    let raf = 0;
-    let io: IntersectionObserver | undefined;
+  // Starts this section's own run the moment it becomes the active one in the sequence.
+  // Only ever moves pending -> run, never reverts a later section back to pending once
+  // activeIndex has moved past it — that transition is owned by the timer effect below.
+  useEffect(() => {
+    if (!ready || !enabled || activeIndex !== myIndex) return;
+    let raf1 = 0;
+    let raf2 = 0;
     // One frame in "pending" first, so a replay drops the old animations before
     // re-adding them — otherwise the browser would not restart them.
-    const start = () => {
-      raf = requestAnimationFrame(() => {
-        raf = requestAnimationFrame(() => setStatus('run'));
-      });
-    };
-
-    if (auto) {
-      start();
-    } else {
-      io = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            io?.disconnect();
-            start();
-          }
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -15% 0px' },
-      );
-      io.observe(el);
-    }
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setStatus('run'));
+    });
     return () => {
-      cancelAnimationFrame(raf);
-      io?.disconnect();
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
     };
-  }, [ready, enabled, runId, auto]);
+  }, [ready, enabled, runId, activeIndex, myIndex]);
 
   useEffect(() => {
     if (status !== 'run') return;
@@ -92,7 +78,7 @@ export function BuildSection({ as: Tag = 'section', buildId, auto, duration, log
 
   return (
     <StatusContext.Provider value={status}>
-      <Tag ref={ref as React.Ref<HTMLElement & HTMLDivElement>} data-build={status} {...rest}>
+      <Tag data-build={status} {...rest}>
         {children}
       </Tag>
     </StatusContext.Provider>

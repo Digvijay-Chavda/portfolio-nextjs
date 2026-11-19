@@ -3,6 +3,7 @@ import { bd } from '@/lib/build';
 import { BuildSection } from './build/BuildSection';
 import { BuildSelect } from './build/BuildSelect';
 import { DrawTrace } from './build/DrawTrace';
+import { ScanSweep } from './build/ScanSweep';
 import { SectionEyebrow } from './SectionEyebrow';
 
 const STEP = 0.45; // seconds between cards
@@ -24,7 +25,8 @@ export function ProProjects() {
 
       <div className="relative">
         <DrawTrace at={0.1} dur={last + 0.6} radius={12} />
-        <div className="flex flex-col gap-px overflow-hidden rounded-xl border border-(--color-pro-line) bg-(--color-pro-line)">
+        <div className="relative flex flex-col gap-px overflow-hidden rounded-xl border border-(--color-pro-line) bg-(--color-pro-line)">
+          <ScanSweep at={0.05} dur={last + 0.5} />
           {CASES.map((c, i) => {
             const at = 0.3 + i * STEP;
             return (

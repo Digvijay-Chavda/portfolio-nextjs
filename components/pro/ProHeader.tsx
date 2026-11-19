@@ -7,6 +7,7 @@ import { bd } from '@/lib/build';
 import { BUILD_COMMAND } from './build/BuildProvider';
 import { BuildSection } from './build/BuildSection';
 import { BuildSelect } from './build/BuildSelect';
+import { TypedWords } from './build/TypedWords';
 import { useProMode } from './useProMode';
 
 function ModeToggle({ mode, toggle, compact }: { mode: 'light' | 'dark'; toggle: () => void; compact?: boolean }) {
@@ -14,7 +15,7 @@ function ModeToggle({ mode, toggle, compact }: { mode: 'light' | 'dark'; toggle:
     <button
       onClick={toggle}
       className={`flex items-center gap-2 rounded-full border border-(--color-pro-line) bg-(--color-pro-surface) py-1.5 text-xs text-(--color-pro-muted) transition-colors hover:border-(--color-pro-accent) hover:text-(--color-pro-ink) ${
-        compact ? 'px-2.5' : 'w-full px-3'
+        compact ? 'px-2.5' : 'w-fit px-3.5'
       }`}
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 shrink-0">
@@ -58,26 +59,33 @@ export function ProHeader() {
         <BuildSection
           as="div"
           buildId="profile"
-          auto
           duration={1.6}
-          className="relative"
           log={[
             { at: 0, text: BUILD_COMMAND },
             { at: 0.15, text: '→ building aside.profile' },
           ]}
         >
-          {/* inner: the aside scrolls, so anything outside its box would be clipped */}
-          <BuildSelect label="aside.profile" at={0.1} life={1.4} inner />
-          <p className="b-fade mb-5 text-xs text-(--color-pro-muted)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.3) }}>~/portfolio</p>
-          <h1 className="b-wipe m-0 text-[30px] font-extrabold tracking-tight text-(--color-pro-ink)" style={bd(0.4, { '--dur': 0.6 })}>Digvijay Chavda</h1>
-          <p className="b-rise mt-1.5 mb-4.5 text-sm font-semibold text-(--color-pro-accent)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.7) }}>
-            Software Developer
-          </p>
-          <p className="b-rise m-0 max-w-[30ch] text-sm leading-relaxed text-(--color-pro-muted)" style={bd(0.8)}>
-            {SIDEBAR_BIO}
-          </p>
+          {/* Split into two selections — the profile card and the nav — instead of one
+              box spanning both, so each stays tightly sized to its own content. */}
+          {/* px/pt/pb give the text a little clearance from the box's own inset — the
+              aside scrolls, so the box has to inset inward, and without this padding
+              flush content (the heading, the nav's dash marks) pokes past its border. */}
+          <div className="relative px-1.5 pt-1 pb-3">
+            <BuildSelect label="div.profile-card" at={0.1} life={1.25} inner />
+            <p className="b-fade mb-5 text-xs text-(--color-pro-muted)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.3) }}>~/portfolio</p>
+            <h1 className="m-0 text-[30px] font-extrabold tracking-tight text-(--color-pro-ink)">
+              <TypedWords text="Digvijay Chavda" at={0.4} />
+            </h1>
+            <p className="b-rise mt-1.5 mb-4.5 text-sm font-semibold text-(--color-pro-accent)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.7) }}>
+              Software Developer
+            </p>
+            <p className="b-rise m-0 max-w-[30ch] text-sm leading-relaxed text-(--color-pro-muted)" style={bd(0.8)}>
+              {SIDEBAR_BIO}
+            </p>
+          </div>
 
-          <nav className="b-rise mt-12 flex flex-col gap-3.5" style={bd(0.9)}>
+          <nav className="b-rise relative mt-12 flex flex-col gap-3.5 px-1.5 pt-1 pb-3" style={bd(0.9)}>
+            <BuildSelect label="nav.menu" at={0.95} life={0.65} inner />
             {NAV_PRO.map(n => {
               const on = active === n.id;
               return (
