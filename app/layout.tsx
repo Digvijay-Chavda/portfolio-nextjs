@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Barlow, Barlow_Condensed, Big_Shoulders, Inter, JetBrains_Mono } from 'next/font/google';
+import { BUILD_SESSION_KEY } from '@/lib/build';
 import './globals.css';
 
 const display = Big_Shoulders({ subsets: ['latin'], weight: ['600', '800', '900'], variable: '--font-big-shoulders' });
@@ -38,11 +39,15 @@ export const viewport: Viewport = { themeColor: '#0a0b0a' };
 // Runs synchronously before React hydrates, so a returning Evil-preferring visitor's
 // reload doesn't show a frame of Professional content — ThemeGate reads this same
 // data attribute to cover the screen instantly until the real Evil DOM is ready.
-const THEME_BOOT_SCRIPT = `try{var t=window.localStorage.getItem('portfolio:theme');if(t==='evil')document.documentElement.dataset.themeBoot='evil';}catch(e){}`;
+//
+// It also arms the Professional theme's "AI is building this page" intro by adding
+// .ai-build to <html> — only with JS, only once per tab session, never for reduced-motion
+// users — so the CSS that hides not-yet-built content can never strand anyone on a blank page.
+const THEME_BOOT_SCRIPT = `try{var d=document.documentElement,t=window.localStorage.getItem('portfolio:theme');if(t==='evil')d.dataset.themeBoot='evil';else if(!window.sessionStorage.getItem('${BUILD_SESSION_KEY}')&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('ai-build');}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${cond.variable} ${sans.variable} ${proSans.variable} ${proMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${cond.variable} ${sans.variable} ${proSans.variable} ${proMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>

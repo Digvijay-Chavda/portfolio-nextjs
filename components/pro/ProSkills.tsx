@@ -1,14 +1,23 @@
 import { LOADOUT } from '@/data/content';
-import { ProReveal } from './ProReveal';
+import { bd } from '@/lib/build';
+import { BuildSection } from './build/BuildSection';
+import { BuildSelect } from './build/BuildSelect';
 import { SectionEyebrow } from './SectionEyebrow';
 
 export function ProSkills() {
   return (
-    <section id="loadout" className="scroll-mt-8 py-16 md:py-20">
+    <BuildSection
+      buildId="loadout"
+      duration={2}
+      log={[{ at: 1, text: '✓ skills grid', tone: 'ok' }]}
+      id="loadout"
+      className="scroll-mt-8 py-16 md:py-20"
+    >
       <SectionEyebrow num="02" label="Skills" />
-      <ProReveal className="grid grid-cols-1 gap-8 @sm:grid-cols-2 @xl:grid-cols-3 @4xl:grid-cols-4">
-        {LOADOUT.map(group => (
-          <div key={group.title}>
+      <div className="relative grid grid-cols-1 gap-8 @sm:grid-cols-2 @xl:grid-cols-3 @4xl:grid-cols-4">
+        <BuildSelect label="div.skills-grid" at={0.1} life={1.5} />
+        {LOADOUT.map((group, i) => (
+          <div key={group.title} className="b-rise" style={bd(0.35 + i * 0.15)}>
             <p
               className="m-0 mb-3 border-b border-(--color-pro-line) pb-2 text-[12.5px] font-bold tracking-widest text-(--color-pro-accent) uppercase"
               style={{ fontFamily: 'var(--font-pro-mono)' }}
@@ -24,7 +33,7 @@ export function ProSkills() {
             </ul>
           </div>
         ))}
-      </ProReveal>
-    </section>
+      </div>
+    </BuildSection>
   );
 }
