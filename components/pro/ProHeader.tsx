@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import { CONTACT } from '@/data/content';
 import { NAV_PRO, SIDEBAR_BIO } from '@/data/content-pro';
+import { bd } from '@/lib/build';
+import { BUILD_COMMAND } from './build/BuildProvider';
+import { BuildSection } from './build/BuildSection';
+import { BuildSelect } from './build/BuildSelect';
 import { useProMode } from './useProMode';
 
 function ModeToggle({ mode, toggle, compact }: { mode: 'light' | 'dark'; toggle: () => void; compact?: boolean }) {
@@ -51,17 +55,29 @@ export function ProHeader() {
     <>
       {/* Desktop: sticky sidebar */}
       <aside className="sticky top-0 hidden max-h-screen w-80 shrink-0 flex-col justify-between overflow-y-auto py-12 md:flex">
-        <div>
-          <p className="mb-5 text-xs text-(--color-pro-muted)" style={{ fontFamily: 'var(--font-pro-mono)' }}>~/portfolio</p>
-          <h1 className="m-0 text-[30px] font-extrabold tracking-tight text-(--color-pro-ink)">Digvijay Chavda</h1>
-          <p className="mt-1.5 mb-4.5 text-sm font-semibold text-(--color-pro-accent)" style={{ fontFamily: 'var(--font-pro-mono)' }}>
+        <BuildSection
+          as="div"
+          buildId="profile"
+          auto
+          duration={1.6}
+          className="relative"
+          log={[
+            { at: 0, text: BUILD_COMMAND },
+            { at: 0.15, text: '→ building aside.profile' },
+          ]}
+        >
+          {/* inner: the aside scrolls, so anything outside its box would be clipped */}
+          <BuildSelect label="aside.profile" at={0.1} life={1.4} inner />
+          <p className="b-fade mb-5 text-xs text-(--color-pro-muted)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.3) }}>~/portfolio</p>
+          <h1 className="b-wipe m-0 text-[30px] font-extrabold tracking-tight text-(--color-pro-ink)" style={bd(0.4, { '--dur': 0.6 })}>Digvijay Chavda</h1>
+          <p className="b-rise mt-1.5 mb-4.5 text-sm font-semibold text-(--color-pro-accent)" style={{ fontFamily: 'var(--font-pro-mono)', ...bd(0.7) }}>
             Software Developer
           </p>
-          <p className="m-0 max-w-[30ch] text-sm leading-relaxed text-(--color-pro-muted)">
+          <p className="b-rise m-0 max-w-[30ch] text-sm leading-relaxed text-(--color-pro-muted)" style={bd(0.8)}>
             {SIDEBAR_BIO}
           </p>
 
-          <nav className="mt-12 flex flex-col gap-3.5">
+          <nav className="b-rise mt-12 flex flex-col gap-3.5" style={bd(0.9)}>
             {NAV_PRO.map(n => {
               const on = active === n.id;
               return (
@@ -78,7 +94,7 @@ export function ProHeader() {
               );
             })}
           </nav>
-        </div>
+        </BuildSection>
 
         <div className="flex flex-col gap-4.5">
           <ModeToggle mode={mode} toggle={toggle} />

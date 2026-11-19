@@ -17,6 +17,17 @@ npm run typecheck
 
 Import the repo into Vercel and keep the defaults — no base path needed. Every push to `master` auto-deploys.
 
+## AI build intro (Professional theme)
+On a visitor's first load per tab, the page "builds itself": an agent cursor drags selection
+boxes around each element, a build log narrates in the bottom-right corner, and one deliberate
+mistake (unreadable button contrast) is flagged and reverted before the real buttons appear.
+Sections below the fold build when they scroll into view. Reduced-motion users, no-JS
+visitors and crawlers always get the plain, fully visible page.
+
+- Agent name and speed: `lib/build.ts` (`AGENT_NAME`, `BUILD_SPEED`)
+- Components: `components/pro/build/` (provider, section wrapper, selection cursor, log, border trace, typed text)
+- Timing lives in CSS: `app/globals.css`, section "AI build effect"
+
 ## Editing content
 All copy (case files, loadout, chapters, nav, loader tips, contact links) lives in **`data/content.ts`**. Images and the resume PDF are in `public/assets/`.
 
