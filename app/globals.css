@@ -331,6 +331,12 @@
 .b-line { transform-origin: left center; }
 
 /* ---- pending ---- */
+/* Sections now wait their turn in a strict sequence and can sit pending for several
+   seconds, not just a frame or two — so the section itself has to disappear, not just
+   its individually-animated children. Otherwise a not-yet-started section's own card
+   chrome (background, border, padding) shows through as an empty placeholder box well
+   before the agent "gets to" it. */
+html.ai-build [data-build="pending"] { opacity: 0; pointer-events: none; }
 html.ai-build [data-build="pending"] :is(.b-rise, .b-fade, .b-pop, .b-materialize) { opacity: 0; }
 html.ai-build [data-build="pending"] .b-line { transform: scaleX(0); }
 html.ai-build [data-build="pending"] .b-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
